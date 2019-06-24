@@ -2,6 +2,7 @@ import React from "react";
 import { login, register } from "../state/actionCreators";
 import styled from "styled-components";
 import { connect } from "react-redux";
+import uploader from './upload';
 
 class Login extends React.Component {
   constructor(props) {
@@ -17,6 +18,15 @@ class Login extends React.Component {
   email = React.createRef();
   age = React.createRef();
   confirmPword = React.createRef();
+  imagesrc;
+  uploadPicture = () => {
+    uploader(this.getPicture).open()
+  }
+
+  getPicture = (value) => {
+    this.imagesrc = value.info.url
+    return this.imagesrc
+  }
 
   loginUser = e => {
     e.preventDefault();
@@ -32,7 +42,8 @@ class Login extends React.Component {
       age: this.age.current.value,
       height: this.height.current.value,
       weight: this.weight.current.value,
-      password: this.password.current.value
+      password: this.password.current.value,
+      src:this.imagesrc,
     };
     if(data.password === this.confirmPword.current.value){
         this.props.register(data)
@@ -52,6 +63,8 @@ class Login extends React.Component {
       <div>
       Register on Lifted
       <form onSubmit={e => this.registerUser(e)}>
+      <button onClick = {this.uploadPicture}>Upload Picture </button>
+      <img src = {this.src} alt=''/>
       <input type="text" ref={this.user} placeholder="Username" required />
       <input type="email" ref={this.email} placeholder="Email" required />
       <input type="age" ref={this.age} placeholder="Age" />

@@ -1,33 +1,36 @@
 import * as types from "./actionTypes";
-const initialState = {
-  loggingIn: false,
-  loggingOut: false,
-  isLoggedIn: true,
-  users: [],
-  user: {},
-  gettingUser: false,
-  updatingUser: false,
-  registering: false,
-  addingExercise: false,
-  fetchingExercises: false,
-  deletingExercise: false,
-  updatingExercise: false,
-  gettingExercise: false,
-  addingWorkout: false,
-  deletingWorkout: false,
-  updatingWorkout: false,
-  gettingWorkout: false,
-  exercises: [],
-  exercise: {},
-  workout: {},
-  error: null
-};
-export const userReducer = (state = initialState, action) => {
+// const initialState = {
+//   loggingIn: false,
+//   loggingOut: false,
+//   isLoggedIn: true,
+//   users: [],
+//   user: {},
+//   gettingUser: false,
+//   updatingUser: false,
+//   // deletingUser:false,
+//   registering: false,
+//   addingExercise: false,
+//   fetchingExercises: false,
+//   deletingExercise: false,
+//   updatingExercise: false,
+//   gettingExercise: false,
+//   addingWorkout: false,
+//   deletingWorkout: false,
+//   updatingWorkout: false,
+//   gettingWorkout: false,
+//   exercises: [],
+//   exercise: {},
+//   workout: {},
+//   error: null
+//  };
+export const userReducer = (state = {gettingUser:false, updatingUser:false, user:[], error:null}, action) => {
   switch (action.type) {
     case types.GET_USER:
       return { ...state, gettingUser: true };
     case types.UPDATE_USER:
       return { ...state, updatingUser: true };
+    // case types.DELETE_USER:
+    //   return {...state , deletingUser:true};
     case types.SUCCESS:
       return {
         ...state,
@@ -47,7 +50,7 @@ export const userReducer = (state = initialState, action) => {
       return state;
   }
 };
-export const registerReducer = (state = initialState, action) => {
+export const registerReducer = (state = {registering:false , loggingIn: false, users:{}, error:null}, action) => {
   switch (action.type) {
     case types.REGISTER:
       return { ...state, registering: true };
@@ -65,7 +68,7 @@ export const registerReducer = (state = initialState, action) => {
       return state;
   }
 };
-export const loginReducer = (state = initialState, action) => {
+export const loginReducer = (state = {loggingIn:false ,loggingOut:false ,isLoggedIn:false , error:null}, action) => {
   switch (action.type) {
     case types.LOGIN:
       return { ...state, loggingIn: true };
@@ -91,7 +94,7 @@ export const loginReducer = (state = initialState, action) => {
   }
 };
 
-export const exercisesReducer = (state = initialState, action) => {
+export const exercisesReducer = (state = {addingExercise:false,fetchingExercises:false,deletingExercise:false,exercises:{},error:null}, action) => {
   switch (action.type) {
     case types.ADD_EXERCISE:
       return {
@@ -129,7 +132,7 @@ export const exercisesReducer = (state = initialState, action) => {
       return state;
   }
 };
-export const exerciseReducer = (state = initialState, action) => {
+export const exerciseReducer = (state = {gettingExercise:false,updatingExercise:false,addingWorkout:false,deletingWorkout:false, error:null, exercise:[]}, action) => {
   switch (action.type) {
     case types.GET_EXERCISE:
       return {
@@ -175,7 +178,7 @@ export const exerciseReducer = (state = initialState, action) => {
   }
 };
 
-export const workoutReducer = (state = initialState, action) => {
+export const workoutReducer = (state = {gettingWorkout:false,updatingWorkout:false,workout:[],error:null}, action) => {
   switch (action.type) {
     case types.GET_WORKOUT:
       return {

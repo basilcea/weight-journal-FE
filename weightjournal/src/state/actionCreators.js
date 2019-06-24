@@ -10,7 +10,6 @@ const loggedInAxios = () => {
   });
   return instance;
 };
-
 export const success = value => {
   return {
     type: types.SUCCESS,
@@ -24,17 +23,17 @@ export const failure = value => {
     payload: value
   };
 };
-export const register = (data) => async dispatch => {
+
+export const register = data => async dispatch => {
   dispatch({ type: types.REGISTER });
-  try{
-    await axios.post('http:localhost:3000/api/register', data)
+  try {
+    await axios.post("http:localhost:3000/api/register", data);
     dispatch(success(data));
-    dispatch(login(data.username, data.password))
-    }
-    catch(err){
-      dispatch(failure(err.nessage))
-    }
+    dispatch(login(data.username, data.password));
+  } catch (err) {
+    dispatch(failure(err.nessage));
   }
+};
 
 export const login = (username, password) => async dispatch => {
   dispatch({ type: types.LOGIN });
@@ -45,8 +44,31 @@ export const login = (username, password) => async dispatch => {
   try {
     localStorage.setItem("token", AxiosData.data);
     dispatch(success(true));
-  } catch {
+  } catch(err) {
     dispatch(failure(AxiosData.statusText));
+  }
+};
+export const getProfile = userId => async dispatch => {
+  dispatch({ type: types.GET_USER });
+  try {
+    const AxiosData = await loggedInAxios().get(
+      `http:localhost:3000/api/user/${userId}`
+    );
+    dispatch(success(AxiosData.data));
+  } catch(err) {
+    dispatch(failure(err.message));
+  }
+};
+// export const deleteProfile = (userId) => async dispatch => {
+
+// }
+export const updateProfile = (userId ,data)=> async dispatch => {
+  dispatch({ type: types.UPDATE_USER });
+  await loggedInAxios().put(`http:localhost:3000/api/user/${userId}`, data);
+  try {
+    dispatch(getProfile(userId));
+  } catch (err) {
+    dispatch(failure(err.message));
   }
 };
 
@@ -56,7 +78,6 @@ export const getExercises = () => async dispatch => {
     "http:localhost:3000/api/exercises"
   );
   try {
-
     dispatch(success(AxiosData.data));
   } catch {
     dispatch(failure(AxiosData.statusText));
@@ -76,7 +97,9 @@ export const addExercises = data => async dispatch => {
 export const deleteExercises = exerciseId => async dispatch => {
   dispatch({ type: types.DELETE_EXERCISE });
   try {
-    await loggedInAxios().delete(`http:localhost:3000/api/exercises/${exerciseId}`);
+    await loggedInAxios().delete(
+      `http:localhost:3000/api/exercises/${exerciseId}`
+    );
     dispatch(getExercises());
   } catch (err) {
     dispatch(failure(err.message));
@@ -86,7 +109,10 @@ export const deleteExercises = exerciseId => async dispatch => {
 export const updateExercises = (exerciseId, data) => async dispatch => {
   dispatch({ type: types.UPDATE_EXERCISE });
   try {
-    await loggedInAxios().put(`http:localhost:3000/api/exercises/${exerciseId}`, data);
+    await loggedInAxios().put(
+      `http:localhost:3000/api/exercises/${exerciseId}`,
+      data
+    );
     dispatch(getExercise());
   } catch (err) {
     dispatch(failure(err.message));
@@ -106,9 +132,12 @@ export const getExercise = exerciseId => async dispatch => {
 };
 export const addWorkout = (exerciseId, data) => async dispatch => {
   // for the short reps use only (data)
-  dispatch({ type: types.ADD_WORKOUT});
+  dispatch({ type: types.ADD_WORKOUT });
   try {
-    await loggedInAxios().post(`http:localhost:3000/api/exercises/${exerciseId}`, data);
+    await loggedInAxios().post(
+      `http:localhost:3000/api/exercises/${exerciseId}`,
+      data
+    );
     // await loggedInAxios().post(`http:localhost:3000/api/reps`, data)
     dispatch(getExercise(exerciseId));
   } catch (err) {
@@ -131,12 +160,11 @@ export const deleteWorkout = (exerciseId, workoutId) => async dispatch => {
   }
 };
 export const getWorkout = (exerciseId, workoutId) => async dispatch => {
-  dispatch({ type: types.GET_WORKOUT});
+  dispatch({ type: types.GET_WORKOUT });
   const AxiosData = await loggedInAxios().get(
     `http:localhost:3000/api/exercises/${exerciseId}/workout/${workoutId}`
   );
   try {
- 
     dispatch(success(AxiosData.data));
   } catch {
     dispatch(failure(AxiosData.statusText));

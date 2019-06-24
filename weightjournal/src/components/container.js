@@ -13,9 +13,9 @@ const Container = (props ) => {
     )
 }
 
-const mapStateToProps = ( loginReducer)=> {
+const mapStateToProps = (loginReducer)=> {
     return ({
-    loggedIn: loginReducer.loggedIn.isLoggedIn
+    loggedIn: loginReducer.loggedIn
     })
 }
 
