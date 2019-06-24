@@ -24,12 +24,6 @@ export const failure = value => {
     payload: value
   };
 };
-export const selectCategory = value => {
-  return {
-    type: types.SELECT_CATEGORY,
-    payload: value
-  };
-};
 export const register = (data) => async dispatch => {
   dispatch({ type: types.REGISTER });
   try{
@@ -56,107 +50,108 @@ export const login = (username, password) => async dispatch => {
   }
 };
 
-export const getJournals = () => async dispatch => {
-  dispatch({ type: types.FETCH_JOURNALS });
+export const getExercises = () => async dispatch => {
+  dispatch({ type: types.FETCH_EXERCISES });
+  const AxiosData = await loggedInAxios().get(
+    "http:localhost:3000/api/exercises"
+  );
   try {
-    const AxiosData = await loggedInAxios().get(
-      "http:localhost:3000/api/journals"
-    );
+
     dispatch(success(AxiosData.data));
   } catch {
     dispatch(failure(AxiosData.statusText));
   }
 };
 
-export const addJournal = data => async dispatch => {
-  dispatch({ type: types.ADD_JOURNAL });
-  dispatch(selectCategory(data.category));
+export const addExercises = data => async dispatch => {
+  dispatch({ type: types.ADD_EXERCISE });
   try {
-    await loggedInAxios().post("http:localhost:3000/api/journals", data);
-    dispatch(getJournals());
+    await loggedInAxios().post("http:localhost:3000/api/exercises", data);
+    dispatch(getExercises());
   } catch (err) {
     dispatch(failure(err.message));
   }
 };
 
-export const deleteJournal = id => async dispatch => {
-  dispatch({ type: types.DELETE_JOURNAL });
+export const deleteExercises = exerciseId => async dispatch => {
+  dispatch({ type: types.DELETE_EXERCISE });
   try {
-    await loggedInAxios().delete(`http:localhost:3000/api/journals/${id}`);
-    dispatch(getJournals());
+    await loggedInAxios().delete(`http:localhost:3000/api/exercises/${exerciseId}`);
+    dispatch(getExercises());
   } catch (err) {
     dispatch(failure(err.message));
   }
 };
 
-export const updateJournal = (id, data) => async dispatch => {
-  dispatch({ type: types.UPDATE_JOURNAL });
+export const updateExercises = (exerciseId, data) => async dispatch => {
+  dispatch({ type: types.UPDATE_EXERCISE });
   try {
-    await loggedInAxios().put(`http:localhost:3000/api/journals/${id}`, data);
-    dispatch(getJournal());
+    await loggedInAxios().put(`http:localhost:3000/api/exercises/${exerciseId}`, data);
+    dispatch(getExercise());
   } catch (err) {
     dispatch(failure(err.message));
   }
 };
 
-export const getJournal = id => async dispatch => {
-  dispatch({ type: types.GET_JOURNAL });
+export const getExercise = exerciseId => async dispatch => {
+  dispatch({ type: types.GET_EXERCISE });
+  const AxiosData = await loggedInAxios().get(
+    `http:localhost:3000/api/exercises/${exerciseId}`
+  );
   try {
-    const AxiosData = await loggedInAxios().get(
-      `http:localhost:3000/api/journals/${id}`
-    );
     dispatch(success(AxiosData.data));
   } catch {
     dispatch(failure(AxiosData.statusText));
   }
 };
-export const getReps = (id, repId) => async dispatch => {
-  dispatch({ type: types.GET_REP });
-  try {
-    const AxiosData = await loggedInAxios().get(
-      `http:localhost:3000/api/journals/${id}/rep/${repId}`
-    );
-    dispatch(succes(AxiosData.data));
-  } catch {
-    dispatch(failure(AxiosData.statusText));
-  }
-};
-export const addReps = (id, data) => async dispatch => {
+export const addWorkout = (exerciseId, data) => async dispatch => {
   // for the short reps use only (data)
-  dispatch({ type: types.ADD_REPS });
+  dispatch({ type: types.ADD_WORKOUT});
   try {
-    await loggedInAxios().post(`http:localhost:3000/api/journals/${id}`, data);
+    await loggedInAxios().post(`http:localhost:3000/api/exercises/${exerciseId}`, data);
     // await loggedInAxios().post(`http:localhost:3000/api/reps`, data)
-    dispatch(getJournal(id));
+    dispatch(getExercise(exerciseId));
   } catch (err) {
     dispatch(failure(err.message));
   }
 };
 
 // ask the backend guy if it best to use the long url or the short url
-export const deleteReps = (id, repId) => async dispatch => {
+export const deleteWorkout = (exerciseId, workoutId) => async dispatch => {
   // (repId)
-  dispatch({ type: types.DELETE_REPS });
+  dispatch({ type: types.DELETE_WORKOUT });
   try {
     await loggedInAxios().delete(
-      `http:localhost:3000/api/journals/${id}/reps/${repId}`
+      `http:localhost:3000/api/exercises/${exerciseId}/workout/${workoutId}`
     );
     // await loggedInAxios().post(`http:localhost:3000/api/reps/${repId}`)
-    dispatch(getJournal(id));
+    dispatch(getExercise(exerciseId));
   } catch (err) {
     dispatch(failure(err.message));
   }
 };
+export const getWorkout = (exerciseId, workoutId) => async dispatch => {
+  dispatch({ type: types.GET_WORKOUT});
+  const AxiosData = await loggedInAxios().get(
+    `http:localhost:3000/api/exercises/${exerciseId}/workout/${workoutId}`
+  );
+  try {
+ 
+    dispatch(success(AxiosData.data));
+  } catch {
+    dispatch(failure(AxiosData.statusText));
+  }
+};
 
-export const updateReps = (id, repId, data) => async dispatch => {
+export const updateReps = (exerciseId, workoutId, data) => async dispatch => {
   // (repId , data)
-  dispatch({ type: types.UPDATE_REPS });
+  dispatch({ type: types.UPDATE_WORKOUT });
   try {
     await loggedInAxios().put(
-      `http:localhost:3000/api/journals/${id}/reps/${repId}`,
+      `http:localhost:3000/api/exercise/${exerciseId}/workout/${workoutId}`,
       data
     );
-    dispatch(getReps(id, repId));
+    dispatch(getWorkout(exerciseId, workoutId));
   } catch (err) {
     dispatch(failure(err.message));
   }

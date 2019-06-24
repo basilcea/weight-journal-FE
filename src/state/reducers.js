@@ -3,8 +3,11 @@ const initialState = {
   loggingIn: false,
   loggingOut: false,
   isLoggedIn: false,
-  users:[],
-  registering:false,
+  users: [],
+  user: {},
+  gettingUser: false,
+  updatingUser: false,
+  registering: false,
   addingJournal: false,
   fetchingJournals: false,
   deletingJournal: false,
@@ -19,20 +22,49 @@ const initialState = {
   reps: {},
   error: null
 };
-export const registerReducer = (state = initialState , action) => {
-  switch(action.type){
-    case types.REGISTER:
-      return{...state , registering:true}
+export const userReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case types.GET_USER:
+      return { ...state, gettingUser: true };
+    case types.UPDATE_USER:
+      return { ...state, updatingUser: true };
     case types.SUCCESS:
-      return{...state, users:state.users.concat(action.payload), error:null}
+      return {
+        ...state,
+        user: action.payload,
+        gettingUser: false,
+        updatingUser: false,
+        error: null
+      };
     case types.FAILURE:
-      return{...state, error:action.payload}
-    case types.LOGIN:
-      return{...state, loggingIn:true}
+      return {
+        ...state,
+        error: action.payload,
+        gettingUser: false,
+        updatingUser: false
+      };
     default:
       return state;
   }
-}
+};
+export const registerReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case types.REGISTER:
+      return { ...state, registering: true };
+    case types.SUCCESS:
+      return {
+        ...state,
+        users: state.users.concat(action.payload),
+        error: null
+      };
+    case types.FAILURE:
+      return { ...state, error: action.payload };
+    case types.LOGIN:
+      return { ...state, loggingIn: true };
+    default:
+      return state;
+  }
+};
 export const loginReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.LOGIN:

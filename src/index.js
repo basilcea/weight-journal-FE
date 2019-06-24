@@ -6,7 +6,7 @@ import { createStore, applyMiddleware, combineReducers, compose } from "redux";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 import App from  './App';
-import { journalReducer, repsReducer,journalsReducer ,loginReducer, registerReducer} from "./state/reducers";
+import { journalReducer, repsReducer,journalsReducer ,loginReducer, registerReducer , userReducer} from "./state/reducers";
 
 const combinedReducer = combineReducers({
   users: registerReducer,
@@ -14,6 +14,7 @@ const combinedReducer = combineReducers({
   journal: journalReducer,
   reps: repsReducer,
   loggedIn: loginReducer,
+  user: userReducer
 });
 const store = createStore(
   combinedReducer,
