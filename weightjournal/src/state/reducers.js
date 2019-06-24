@@ -1,0 +1,208 @@
+import * as types from "./actionTypes";
+const initialState = {
+  loggingIn: false,
+  loggingOut: false,
+  isLoggedIn: false,
+  users: [],
+  user: {},
+  gettingUser: false,
+  updatingUser: false,
+  registering: false,
+  addingExercise: false,
+  fetchingExercises: false,
+  deletingExercise: false,
+  updatingExercise: false,
+  gettingExercise: false,
+  addingWorkout: false,
+  deletingWorkout: false,
+  updatingWorkout: false,
+  gettingWorkout: false,
+  exercises: [],
+  exercise: {},
+  workout: {},
+  error: null
+};
+export const userReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case types.GET_USER:
+      return { ...state, gettingUser: true };
+    case types.UPDATE_USER:
+      return { ...state, updatingUser: true };
+    case types.SUCCESS:
+      return {
+        ...state,
+        user: action.payload,
+        gettingUser: false,
+        updatingUser: false,
+        error: null
+      };
+    case types.FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        gettingUser: false,
+        updatingUser: false
+      };
+    default:
+      return state;
+  }
+};
+export const registerReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case types.REGISTER:
+      return { ...state, registering: true };
+    case types.SUCCESS:
+      return {
+        ...state,
+        users: state.users.concat(action.payload),
+        error: null
+      };
+    case types.FAILURE:
+      return { ...state, error: action.payload };
+    case types.LOGIN:
+      return { ...state, loggingIn: true };
+    default:
+      return state;
+  }
+};
+export const loginReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case types.LOGIN:
+      return { ...state, loggingIn: true };
+    case types.LOGOUT:
+      return { ...state, loggingOut: true };
+    case types.SUCCESS:
+      return {
+        ...state,
+        loggingIn: false,
+        loggingOut: false,
+        isLoggedIn: action.payload,
+        error: null
+      };
+    case types.FAILURE:
+      return {
+        ...state,
+        loggingIn: false,
+        loggingOut: false,
+        error: action.payload
+      };
+    default:
+      return state;
+  }
+};
+
+export const exercisesReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case types.ADD_EXERCISE:
+      return {
+        ...state,
+        addingExercise: true
+      };
+    case types.FETCH_EXERCISES:
+      return {
+        ...state,
+        fetchingExercises: true
+      };
+    case types.DELETE_EXERCISE:
+      return {
+        ...state,
+        deletingExercise: true
+      };
+    case types.SUCCESS:
+      return {
+        ...state,
+        exercises: action.payload,
+        addingExercise: false,
+        fetchingExercises: false,
+        deletingExercise: false,
+        error: null
+      };
+    case types.FAILURE:
+      return {
+        ...state,
+        addingExercise: false,
+        fetchingExercises: false,
+        deletingExercise: false,
+        error: action.payload
+      };
+    default:
+      return state;
+  }
+};
+export const exerciseReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case types.GET_EXERCISE:
+      return {
+        ...state,
+        gettingExercise: true
+      };
+    case types.UPDATE_EXERCISE:
+      return {
+        ...state,
+        updatingExercise: true
+      };
+    case types.ADD_WORKOUT:
+      return {
+        ...state,
+        addingWorkout: true
+      };
+    case types.DELETE_WORKOUT:
+      return {
+        ...state,
+        deletingWorkout: true
+      };
+    case types.SUCCESS:
+      return {
+        ...state,
+        exercise: action.payload,
+        gettingExercise: false,
+        updatingExercise: false,
+        addingWorkout: false,
+        deletingWorkout: false,
+        error: null
+      };
+    case types.FAILURE:
+      return {
+        ...state,
+        gettingExercise: false,
+        updatingExercise: false,
+        addingWorkout: false,
+        deletingWorkout: false,
+        error: action.payload
+      };
+    default:
+      return state;
+  }
+};
+
+export const workoutReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case types.GET_WORKOUT:
+      return {
+        ...state,
+        gettingWorkout: true
+      };
+    case types.UPDATE_WORKOUT:
+      return {
+        ...state,
+        updatingWorkout: true
+      };
+    case types.SUCCESS:
+      return {
+        ...state,
+        workout: action.payload,
+        gettingWorkout: false,
+        updatingWorkout: false,
+        error: null
+      };
+    case types.FAILURE:
+      return {
+        ...state,
+        gettingWorkout: false,
+        updatingWorkout: false,
+        error: action.payload
+      };
+    default:
+      return state;
+  }
+};
