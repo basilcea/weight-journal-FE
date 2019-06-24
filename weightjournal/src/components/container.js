@@ -7,7 +7,7 @@ const Authenticated =  authenticate(ExercisePage)(LoginPage)
 const Container = (props ) => {
     return(
     <div>
-    Weight Lifting Journal
+    Lifted
     <Authenticated  {...props}/>
     </div>
     )

@@ -1,34 +1,83 @@
-import React from 'react';
-import {login} from '../state/actionCreators';
-import styled from 'styled-components';
-import {connect} from 'react-redux';
+import React from "react";
+import { login, register } from "../state/actionCreators";
+import styled from "styled-components";
+import { connect } from "react-redux";
 
-class Login extends React.Component{
-    constructor(props){
-        super(props)
-    }
+class Login extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-nameRef = React.createRef();
+  usernameRef = React.createRef();
+  passRef = React.createRef();
+  user = React.createRef();
+  height = React.createRef();
+  weight = React.createRef();
+  password = React.createRef();
+  email = React.createRef();
+  age = React.createRef();
+  confirmPword = React.createRef();
 
-passRef = React.createRef();
-
-LoginUser = (e) => {
-    e.preventDefault()
+  loginUser = e => {
+    e.preventDefault();
     let username = this.nameRef.current.value;
     let password = this.passRef.current.vaue;
-    this.props.login(username , password)
-}
-    render(){
-        return(
-            <div>
-            <form onSubmit = {(e) => this.LoginUser(e)}>
-            <input ref={this.nameRef} type='text'  />
-            <input ref={this.passRef} type='password' />
-            <button> Login</button>
-            </form>
-        </div>
-        )
+    this.props.login(username, password);
+  };
+  registerUser = e => {
+    e.preventDefault();
+    const data = {
+      username: this.user.current.value,
+      email: this.email.current.value,
+      age: this.age.current.value,
+      height: this.height.current.value,
+      weight: this.weight.current.value,
+      password: this.password.current.value
+    };
+    if(data.password === this.confirmPword.current.value){
+        this.props.register(data)
     }
+  };
+  render() {
+    return (
+      <div>
+      <div>
+      Login to Lifted
+      <form onSubmit={e => this.loginUser(e)}>
+      <input ref={this.usernameRef} type="text" placeholder="Username" />
+      <input ref={this.passRef} type="password" placeholder="Password" />
+      <button> Login</button>
+    </form>
+      </div>
+      <div>
+      Register on Lifted
+      <form onSubmit={e => this.registerUser(e)}>
+      <input type="text" ref={this.user} placeholder="Username" required />
+      <input type="email" ref={this.email} placeholder="Email" required />
+      <input type="age" ref={this.age} placeholder="Age" />
+      <input type="number" ref={this.height} placeholder="Height(in Ft)" />
+      <input type="number" ref={this.weight} placeholder="Weight(in Kg)" />
+      <input
+        type="password"
+        ref={this.password}
+        placeholder="Password"
+        required
+      />
+      <input
+        type="password"
+        ref={this.confirmPword}
+        placeholder="Confirm Password"
+        required
+      />
+      <button>Register</button>
+    </form>
+      </div>
+      </div>
+    );
+  }
 }
 
-export default connect(null, {login})(Login)
+export default connect(
+  null,
+  { login, register }
+)(Login);
