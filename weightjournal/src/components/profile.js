@@ -1,44 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Fragment } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { getProfile } from "../state/actionCreators";
 import { Link } from "react-router-dom";
 
-class Profile extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  componentDidMount() {
-    this.props.getProfile(this.props.match.params.id);
-  }
-  // )= props => {
-  //   useEffect(() => {
-  //     props.getProfile(props.match.params.id);
-  //   });
-  render() {
-        if(!this.props.error){
-            return(
+const Profile = props => {
+  useEffect(() => {
+    props.getProfile(props.match.params.id);
+  }, []);
+  return (
+    <Fragment>
+      {!props.error && (
         <div>
-          <img src={this.props.user.src} alt="" />
-          <h1> {this.props.user.username} </h1>
-          <p> {this.props.user.email}</p>
-          <p>{this.props.user.height}</p>
-          <p>{this.props.user.weight}</p>
-          <p>{this.props.user.age}</p>
+          <img src={props.user.src} alt="" />
+          <h1> {props.user.username} </h1>
+          <p> {props.user.email}</p>
+          <p>{props.user.height}</p>
+          <p>{props.user.weight}</p>
+          <p>{props.user.age}</p>
         </div>
-            )}
-        return (<div>
+      )}
+      {props.error && (
+        <div>
           <p>Page Not Found</p>
-          <p>{this.props.error}</p>
+          <p>{props.error}</p>
           <Link to="/">Go Back</Link>
-        </div>)
-  }
-}
+        </div>
+      )}
+    </Fragment>
+  );
+};
 
-const mapStateToProps = userReducer => {
+const mapStateToProps = ({ userReducer }) => {
   return {
-    user: userReducer.user.user,
-    error: userReducer.user.error
+    user: userReducer.user,
+    error: userReducer.error
   };
 };
 export default connect(

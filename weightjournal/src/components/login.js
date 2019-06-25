@@ -5,11 +5,8 @@ import { connect } from "react-redux";
 import Register from './registerForm';
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  usernameRef = React.createRef();
+  
+  nameRef = React.createRef();
   passRef = React.createRef();
 
   loginUser = e => {
@@ -25,7 +22,7 @@ class Login extends React.Component {
         <div>
           Login to Lifted
           <form onSubmit={e => this.loginUser(e)}>
-            <input ref={this.usernameRef} type="text" placeholder="Username" />
+            <input ref={this.nameRef} type="text" placeholder="Username" />
             <input ref={this.passRef} type="password" placeholder="Password" />
             <button> Login</button>
           </form>

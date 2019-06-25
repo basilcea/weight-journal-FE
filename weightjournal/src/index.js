@@ -9,12 +9,12 @@ import App from  './App';
 import { exerciseReducer, workoutReducer,exercisesReducer ,loginReducer, registerReducer , userReducer} from "./state/reducers";
 
 const combinedReducer = combineReducers({
-  users: registerReducer,
-  exercises: exercisesReducer,
-  exercise: exerciseReducer,
-  workout: workoutReducer,
-  loggedIn: loginReducer,
-  user: userReducer
+  registerReducer,
+  exercisesReducer,
+  exerciseReducer,
+  workoutReducer,
+  loginReducer,
+  userReducer
 });
 const store = createStore(
   combinedReducer,

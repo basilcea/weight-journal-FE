@@ -1,22 +1,21 @@
-import React from 'react';
+import React ,{Fragment} from 'react';
 import authenticate from '../authenticate';
 import LoginPage from  './login';
 import ExercisePage from './exercises';
 import {connect} from 'react-redux'
 const Authenticated =  authenticate(ExercisePage)(LoginPage)
-const Container = (props ) => {
 
+const Container = (props ) => {
     return(
-    <div>
-    <h1>Lifted</h1>
+    <Fragment>
     <Authenticated  {...props}/>
-    </div>
+    </Fragment>
     )
 }
 
-const mapStateToProps = (loginReducer)=> {
+const mapStateToProps = ({loginReducer})=> {
     return ({
-    loggedIn: loginReducer.loggedIn.isLoggedIn
+    loggedIn: loginReducer.isLoggedIn
     })
 }
 
