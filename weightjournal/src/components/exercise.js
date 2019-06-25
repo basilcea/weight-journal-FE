@@ -11,7 +11,7 @@ import WorkoutForm from "./workoutForm";
 const Exercise = props => {
   const [change, setChange] = useState(false);
   const nameRef = React.createRef();
-
+    const bodyRef = React.createRef();
   useEffect(() => {
     props.getExercise(props.match.params.id);
   }, []);
@@ -19,7 +19,8 @@ const Exercise = props => {
   const edit = e => {
       e.preventDefault();
     props.updateExercises(props.match.params.id , {
-        name: nameRef.current.value
+        name: nameRef.current.value,
+        body: bodyRef.current.value
     });
     nameRef.current.value ='';
     setChange(false);
@@ -30,12 +31,14 @@ const Exercise = props => {
         {!change && (
           <div>
             <p>{props.name}</p>
+            <p>Body Target: {props.body}</p>
             <button onClick={() => setChange(true)}>Edit</button>
           </div>
         )}
         {change && (
           <form onClick={e => edit(e)}>
-            <input ref={nameRef} />
+            <input ref={nameRef} value ={props.name} type='text' />
+            <input ref={bodyRef} value ={props.body} type='text' />
             <button>Save</button>
           </form>
         )}
