@@ -16,8 +16,6 @@ class Profile extends React.Component {
   //     props.getProfile(props.match.params.id);
   //   });
   render() {
-      console.log(this.props.user)
-
         if(!this.props.error){
             return(
         <div>

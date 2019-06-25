@@ -1,29 +1,9 @@
 import * as types from "./actionTypes";
-// const initialState = {
-//   loggingIn: false,
-//   loggingOut: false,
-//   isLoggedIn: true,
-//   users: [],
-//   user: {},
-//   gettingUser: false,
-//   updatingUser: false,
-//   // deletingUser:false,
-//   registering: false,
-//   addingExercise: false,
-//   fetchingExercises: false,
-//   deletingExercise: false,
-//   updatingExercise: false,
-//   gettingExercise: false,
-//   addingWorkout: false,
-//   deletingWorkout: false,
-//   updatingWorkout: false,
-//   gettingWorkout: false,
-//   exercises: [],
-//   exercise: {},
-//   workout: {},
-//   error: null
-//  };
-export const userReducer = (state = {gettingUser:false, updatingUser:false, user:[], error:null}, action) => {
+
+export const userReducer = (
+  state = { gettingUser: false, updatingUser: false, user: [], error: null },
+  action
+) => {
   switch (action.type) {
     case types.GET_USER:
       return { ...state, gettingUser: true };
@@ -50,7 +30,10 @@ export const userReducer = (state = {gettingUser:false, updatingUser:false, user
       return state;
   }
 };
-export const registerReducer = (state = {registering:false , loggingIn: false, users:{}, error:null}, action) => {
+export const registerReducer = (
+  state = { registering: false, loggingIn: false, users: {}, error: null },
+  action
+) => {
   switch (action.type) {
     case types.REGISTER:
       return { ...state, registering: true };
@@ -68,7 +51,15 @@ export const registerReducer = (state = {registering:false , loggingIn: false, u
       return state;
   }
 };
-export const loginReducer = (state = {loggingIn:false ,loggingOut:false ,isLoggedIn:false , error:null}, action) => {
+export const loginReducer = (
+  state = {
+    loggingIn: false,
+    loggingOut: false,
+    isLoggedIn: false,
+    error: null
+  },
+  action
+) => {
   switch (action.type) {
     case types.LOGIN:
       return { ...state, loggingIn: true };
@@ -94,7 +85,16 @@ export const loginReducer = (state = {loggingIn:false ,loggingOut:false ,isLogge
   }
 };
 
-export const exercisesReducer = (state = {addingExercise:false,fetchingExercises:false,deletingExercise:false,exercises:{},error:null}, action) => {
+export const exercisesReducer = (
+  state = {
+    addingExercise: false,
+    fetchingExercises: false,
+    deletingExercise: false,
+    exercises: {},
+    error: null
+  },
+  action
+) => {
   switch (action.type) {
     case types.ADD_EXERCISE:
       return {
@@ -132,7 +132,17 @@ export const exercisesReducer = (state = {addingExercise:false,fetchingExercises
       return state;
   }
 };
-export const exerciseReducer = (state = {gettingExercise:false,updatingExercise:false,addingWorkout:false,deletingWorkout:false, error:null, exercise:[]}, action) => {
+export const exerciseReducer = (
+  state = {
+    gettingExercise: false,
+    updatingExercise: false,
+    addingWorkout: false,
+    deletingWorkout: false,
+    error: null,
+    exercise: []
+  },
+  action
+) => {
   switch (action.type) {
     case types.GET_EXERCISE:
       return {
@@ -178,7 +188,15 @@ export const exerciseReducer = (state = {gettingExercise:false,updatingExercise:
   }
 };
 
-export const workoutReducer = (state = {gettingWorkout:false,updatingWorkout:false,workout:[],error:null}, action) => {
+export const workoutReducer = (
+  state = {
+    gettingWorkout: false,
+    updatingWorkout: false,
+    workout: [],
+    error: null
+  },
+  action
+) => {
   switch (action.type) {
     case types.GET_WORKOUT:
       return {

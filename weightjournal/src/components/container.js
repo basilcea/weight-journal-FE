@@ -5,6 +5,7 @@ import ExercisePage from './exercises';
 import {connect} from 'react-redux'
 const Authenticated =  authenticate(ExercisePage)(LoginPage)
 const Container = (props ) => {
+
     return(
     <div>
     Lifted
@@ -15,7 +16,7 @@ const Container = (props ) => {
 
 const mapStateToProps = (loginReducer)=> {
     return ({
-    loggedIn: loginReducer.loggedIn
+    loggedIn: loginReducer.loggedIn.isLoggedIn
     })
 }
 
