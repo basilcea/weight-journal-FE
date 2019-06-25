@@ -3,7 +3,6 @@ import styled from "styled-components";
 import {} from "../state/actionCreators";
 
 const Workout = props => {
-
   return (
     <div>
       <p>Date: {props.data.date}</p>

@@ -20,6 +20,21 @@ const Workouts = props => {
   useEffect(() => {
     props.getWorkouts(Number(props.exerciseId));
   }, []);
+
+  const edit = (e ,id) => {
+      e.preventDefault()
+      props.updateWorkout(props.exerciseId, id ,{
+          date: dateRef.current.value,
+          sets: setRef.current.value,
+          weights: weightRef.current.value,
+          time: timeRef.current.value
+      })
+      dateRef.current.value='';
+      setRef.current.value='';
+      weightRef.current.value='';
+      timeRef.current.value='';
+
+  }
   return (
     <div>
       {props.workouts &&
@@ -36,7 +51,7 @@ const Workouts = props => {
               </div>
             )}
             {change && (
-              <form>
+              <form onSubmit={e => edit(e, workout.id)}>
                 <input type="date" ref={dateRef} value={workout.date} />
                 <input type="number" ref={setRef} value={workout.sets} />
                 <input

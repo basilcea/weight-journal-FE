@@ -71,7 +71,7 @@ class Register extends React.Component {
   render() {
     return (
       <div>
-        Register on Lifted
+        {this.state.text}
         <form onSubmit={e => this.registerUser(e)}>
         <div>
           <button onClick={this.uploadPicture}>Upload Picture </button>
@@ -125,7 +125,7 @@ class Register extends React.Component {
             required
           />
           </div>}
-          <button>Register</button>
+          <button>{this.state.action}</button>
         </form>
       </div>
     );
