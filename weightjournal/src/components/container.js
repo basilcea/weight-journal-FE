@@ -8,7 +8,7 @@ const Container = (props ) => {
 
     return(
     <div>
-    Lifted
+    <h1>Lifted</h1>
     <Authenticated  {...props}/>
     </div>
     )

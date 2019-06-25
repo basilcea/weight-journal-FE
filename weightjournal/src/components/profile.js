@@ -29,6 +29,7 @@ class Profile extends React.Component {
             )}
         return (<div>
           <p>Page Not Found</p>
+          <p>{this.props.error}</p>
           <Link to="/">Go Back</Link>
         </div>)
   }

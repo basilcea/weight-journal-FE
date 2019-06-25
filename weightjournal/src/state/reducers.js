@@ -55,7 +55,7 @@ export const loginReducer = (
   state = {
     loggingIn: false,
     loggingOut: false,
-    isLoggedIn: false,
+    isLoggedIn: true,
     error: null
   },
   action
@@ -90,7 +90,7 @@ export const exercisesReducer = (
     addingExercise: false,
     fetchingExercises: false,
     deletingExercise: false,
-    exercises: {},
+    exercises: [],
     error: null
   },
   action

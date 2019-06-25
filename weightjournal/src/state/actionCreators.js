@@ -64,8 +64,8 @@ export const getProfile = userId => async dispatch => {
 // }
 export const updateProfile = (userId ,data)=> async dispatch => {
   dispatch({ type: types.UPDATE_USER });
-  await loggedInAxios().put(`http:localhost:3000/api/user/${userId}`, data);
   try {
+    await loggedInAxios().put(`http:localhost:3000/api/user/${userId}`, data);
     dispatch(getProfile(userId));
   } catch (err) {
     dispatch(failure(err.message));
@@ -74,13 +74,13 @@ export const updateProfile = (userId ,data)=> async dispatch => {
 
 export const getExercises = () => async dispatch => {
   dispatch({ type: types.FETCH_EXERCISES });
-  const AxiosData = await loggedInAxios().get(
-    "http:localhost:3000/api/exercises"
-  );
   try {
+    const AxiosData = await loggedInAxios().get(
+      "http:localhost:3000/api/exercises"
+    );
     dispatch(success(AxiosData.data));
-  } catch {
-    dispatch(failure(AxiosData.statusText));
+  } catch(err) {
+    dispatch(failure(err.message));
   }
 };
 
