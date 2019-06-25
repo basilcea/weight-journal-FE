@@ -37,15 +37,16 @@ export const register = data => async dispatch => {
 
 export const login = (username, password) => async dispatch => {
   dispatch({ type: types.LOGIN });
-  const AxiosData = await axios.post("http:localhost:3000/api/login", {
-    username,
-    password
-  });
+  
   try {
+    const AxiosData = await axios.post("http:localhost:3000/api/login", {
+      username,
+      password
+    });
     localStorage.setItem("token", AxiosData.data);
     dispatch(success(true));
   } catch(err) {
-    dispatch(failure(AxiosData.statusText));
+    dispatch(failure(err.message));
   }
 };
 export const getProfile = userId => async dispatch => {
@@ -121,13 +122,14 @@ export const updateExercises = (exerciseId, data) => async dispatch => {
 
 export const getExercise = exerciseId => async dispatch => {
   dispatch({ type: types.GET_EXERCISE });
-  const AxiosData = await loggedInAxios().get(
-    `http:localhost:3000/api/exercises/${exerciseId}`
-  );
+ 
   try {
+    const AxiosData = await loggedInAxios().get(
+      `http:localhost:3000/api/exercises/${exerciseId}`
+    );
     dispatch(success(AxiosData.data));
-  } catch {
-    dispatch(failure(AxiosData.statusText));
+  } catch (err){
+    dispatch(failure(err.message));
   }
 };
 export const addWorkout = (exerciseId, data) => async dispatch => {
@@ -159,19 +161,20 @@ export const deleteWorkout = (exerciseId, workoutId) => async dispatch => {
     dispatch(failure(err.message));
   }
 };
-export const getWorkout = (exerciseId, workoutId) => async dispatch => {
-  dispatch({ type: types.GET_WORKOUT });
-  const AxiosData = await loggedInAxios().get(
-    `http:localhost:3000/api/exercises/${exerciseId}/workout/${workoutId}`
-  );
+export const getWorkouts = (exerciseId) => async dispatch => {
+  dispatch({ type: types.GET_WORKOUTS });
+ 
   try {
+    const AxiosData = await loggedInAxios().get(
+      `http:localhost:3000/api/exercises/${exerciseId}/workout`
+    );
     dispatch(success(AxiosData.data));
-  } catch {
-    dispatch(failure(AxiosData.statusText));
+  } catch(err) {
+    dispatch(failure(err.message));
   }
 };
 
-export const updateReps = (exerciseId, workoutId, data) => async dispatch => {
+export const updateWorkout = (exerciseId, workoutId, data) => async dispatch => {
   // (repId , data)
   dispatch({ type: types.UPDATE_WORKOUT });
   try {
@@ -179,7 +182,7 @@ export const updateReps = (exerciseId, workoutId, data) => async dispatch => {
       `http:localhost:3000/api/exercise/${exerciseId}/workout/${workoutId}`,
       data
     );
-    dispatch(getWorkout(exerciseId, workoutId));
+    dispatch(getWorkouts(exerciseId, workoutId));
   } catch (err) {
     dispatch(failure(err.message));
   }

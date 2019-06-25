@@ -73,8 +73,10 @@ class Register extends React.Component {
       <div>
         Register on Lifted
         <form onSubmit={e => this.registerUser(e)}>
+        <div>
           <button onClick={this.uploadPicture}>Upload Picture </button>
           <img src={this.state.src} alt="" />
+          </div>
           <input
             type="text"
             value={this.state.username}

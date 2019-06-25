@@ -198,7 +198,7 @@ export const workoutReducer = (
   action
 ) => {
   switch (action.type) {
-    case types.GET_WORKOUT:
+    case types.GET_WORKOUTS:
       return {
         ...state,
         gettingWorkout: true

@@ -42,8 +42,8 @@ const Exercise = props => {
       </div>
 
       <div>
-        <WorkoutForm />
-        <Workouts props={props.workouts} />
+        {/* <WorkoutForm /> */}
+        <Workouts exerciseId={props.match.params.id} />
       </div>
       <button onClick={() => props.deleteExercises(props.match.params.id)}>
         Delete
@@ -55,9 +55,9 @@ const mapStateToProps = ({ exerciseReducer }) => {
   return {
     exercise: exerciseReducer.exercise,
     error: exerciseReducer.error,
-    updatingExercise: exerciseReducer.updatingExercise
   };
 };
+
 export default connect(
   mapStateToProps,
   { getExercise, deleteExercises, updateExercises }
