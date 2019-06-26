@@ -31,7 +31,12 @@ export const userReducer = (
   }
 };
 export const registerReducer = (
-  state = { registering: false, loggingIn: false, users: {}, error: null },
+  state = {
+    registering: "initial",
+    loggingIn: false,
+    isLoggedin: localStorage.getItem("token") && true,
+    error: null,
+  },
   action
 ) => {
   switch (action.type) {
@@ -40,8 +45,8 @@ export const registerReducer = (
     case types.SUCCESS:
       return {
         ...state,
-        users: state.users.concat(action.payload),
-        error: null
+        error: null,
+        isLoggedIn: true,
       };
     case types.FAILURE:
       return { ...state, error: action.payload };
@@ -55,7 +60,7 @@ export const loginReducer = (
   state = {
     loggingIn: false,
     loggingOut: false,
-    isLoggedIn: true,
+    isLoggedIn: localStorage.getItem("token") && true,
     error: null
   },
   action
@@ -70,7 +75,7 @@ export const loginReducer = (
         ...state,
         loggingIn: false,
         loggingOut: false,
-        isLoggedIn: action.payload,
+        isLoggedIn: true,
         error: null
       };
     case types.FAILURE:
@@ -134,7 +139,7 @@ export const exercisesReducer = (
 };
 export const exerciseReducer = (
   state = {
-    gettingExercise: false,
+    gettingExercise: "initial",
     updatingExercise: false,
     addingWorkout: false,
     deletingWorkout: false,

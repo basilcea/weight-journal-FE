@@ -12,8 +12,9 @@ class Login extends React.Component {
   loginUser = e => {
     e.preventDefault();
     let username = this.nameRef.current.value;
-    let password = this.passRef.current.vaue;
-    this.props.login(username, password);
+    let password = this.passRef.current.value;
+    this.props.login({
+        username : username, password : password});
   };
 
   render() {
@@ -21,7 +22,7 @@ class Login extends React.Component {
       <div>
         <div>
           Login to Lifted
-          <form onSubmit={e => this.loginUser(e)}>
+          <form onSubmit={e => this.loginUser(e)} action='POST'>
             <input ref={this.nameRef} type="text" placeholder="Username" />
             <input ref={this.passRef} type="password" placeholder="Password" />
             <button> Login</button>

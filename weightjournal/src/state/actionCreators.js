@@ -27,24 +27,21 @@ export const failure = value => {
 export const register = data => async dispatch => {
   dispatch({ type: types.REGISTER });
   try {
-    await axios.post("http:localhost:3000/api/register", data);
-    dispatch(success(data));
-    dispatch(login(data.username, data.password));
+    const AxiosData = await axios.post('http://localhost:5000/auth/register', data);
+    localStorage.setItem('token', AxiosData.data.token)
+    dispatch(success());
   } catch (err) {
-    dispatch(failure(err.nessage));
+    dispatch(failure(err.message));
   }
 };
 
-export const login = (username, password) => async dispatch => {
+export const login = (data) => async dispatch => {
   dispatch({ type: types.LOGIN });
   
   try {
-    const AxiosData = await axios.post("http:localhost:3000/api/login", {
-      username,
-      password
-    });
-    localStorage.setItem("token", AxiosData.data);
-    dispatch(success(true));
+    const AxiosData = await axios.post("http://localhost:5000/auth/login", data);
+    localStorage.setItem("token", AxiosData.data.token);
+    dispatch(success());
   } catch(err) {
     dispatch(failure(err.message));
   }
@@ -77,18 +74,19 @@ export const getExercises = () => async dispatch => {
   dispatch({ type: types.FETCH_EXERCISES });
   try {
     const AxiosData = await loggedInAxios().get(
-      "http:localhost:3000/api/exercises"
+      "http:localhost:5000/exercises"
     );
-    dispatch(success(AxiosData.data));
+
+      dispatch(success(AxiosData.data));
   } catch(err) {
-    dispatch(failure(err.message));
-  }
-};
+      dispatch(failure(err.message));
+}
+}
 
 export const addExercises = data => async dispatch => {
   dispatch({ type: types.ADD_EXERCISE });
   try {
-    await loggedInAxios().post("http:localhost:3000/api/exercises", data);
+    await loggedInAxios().post("http:localhost:5000/exercises", data);
     dispatch(getExercises());
   } catch (err) {
     dispatch(failure(err.message));
@@ -122,14 +120,18 @@ export const updateExercises = (exerciseId, data) => async dispatch => {
 
 export const getExercise = exerciseId => async dispatch => {
   dispatch({ type: types.GET_EXERCISE });
- 
   try {
     const AxiosData = await loggedInAxios().get(
       `http:localhost:3000/api/exercises/${exerciseId}`
     );
-    dispatch(success(AxiosData.data));
+    setTimeout(() => {
+      dispatch(success(AxiosData.data));
+    }, 3000); 
   } catch (err){
-    dispatch(failure(err.message));
+    setTimeout(() => {
+      dispatch(failure(err.message));
+    }, 3000);
+    
   }
 };
 export const addWorkout = (exerciseId, data) => async dispatch => {

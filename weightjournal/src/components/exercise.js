@@ -12,6 +12,7 @@ const Exercise = props => {
   const [change, setChange] = useState(false);
   const nameRef = React.createRef();
   const bodyRef = React.createRef();
+
   useEffect(() => {
     props.getExercise(props.match.params.id);
   }, []);
@@ -25,19 +26,19 @@ const Exercise = props => {
     nameRef.current.value = "";
     setChange(false);
   };
-  if(props.error){
-      return (
-        <div>
-        Page Not Found
-        <p>{props.error}</p>
-      </div>
-      )
+  if (props.fetching) {
+    return <div>Loading ---- </div>;
   }
-  else return (
-      <Fragment>
+  if (!props.fetching) {
+    if (!props.error) {
+      return (
+        <Fragment>
           <div>
             {!change && (
               <div>
+                <div>
+                  <img src={props.src} alt="" />
+                </div>
                 <p>{props.name}</p>
                 <p>Body Target: {props.body}</p>
                 <button onClick={() => setChange(true)}>Edit</button>
@@ -60,11 +61,21 @@ const Exercise = props => {
             Delete
           </button>
         </Fragment>
-
+      );
+    } else {
+      return (
+        <div>
+          Page Not Found
+          <p>{props.error}</p>
+        </div>
+      );
+    }
+  }
 };
 const mapStateToProps = ({ exerciseReducer }) => {
   return {
     exercise: exerciseReducer.exercise,
+    fetching: exerciseReducer.gettingExercise,
     error: exerciseReducer.error
   };
 };

@@ -15,7 +15,7 @@ class Register extends React.Component {
       action: "Register",
       src: this.imagesrc,
       value: this.registerUser,
-      password: "",
+      pass: "",
       confirmPword: ""
     };
   }
@@ -38,7 +38,7 @@ class Register extends React.Component {
           src: user.src,
           action: "Update",
           value: this.updateUser,
-          password: ""
+          pass: ""
         });
     }
   }
@@ -62,78 +62,90 @@ class Register extends React.Component {
     return this.imagesrc;
   };
 
-  registerUser = e => {
-    e.preventDefault();
-    if (this.state.password === this.state.confirmPword) {
-      this.props.register(this.state);
-    }
+  registerUser = event => {
+    event.preventDefault();
+    if(this.state.pass === this.state.confirmPword){
+      this.props.register({
+          "username" :this.state.username, 
+          "password":this.state.pass}
+    );
+      }
   };
   render() {
     return (
       <div>
         {this.state.text}
-        <form onSubmit={e => this.registerUser(e)}>
-        <div>
-          <button onClick={this.uploadPicture}>Upload Picture </button>
-          <img src={this.state.src} alt="" />
-          </div>
+        <form onSubmit={e => this.state.value(e)}>
           <input
             type="text"
+            name='username'
             value={this.state.username}
             onChange={e => this.change(e)}
             placeholder="Username"
             required
           />
+          {!this.props.registering && <div>
+            <div>
+            <button onClick={this.uploadPicture}>Upload Picture </button>
+            <img src={this.state.src} alt="" />
+            </div>
           <input
             type="email"
+            name='email'
             value={this.state.email}
             onChange={e => this.change(e)}
             placeholder="Email"
-            required
           />
           <input
-            type="age"
+            type="text"
+            name='age'
             value={this.state.age}
             onChange={e => this.change(e)}
             placeholder="Age"
           />
           <input
             type="number"
+            name='height'
             value={this.state.height}
             onChange={e => this.change(e)}
             placeholder="Height(in Ft)"
           />
           <input
             type="number"
+            name='weight'
             value={this.state.weight}
             onChange={e => this.change(e)}
             placeholder="Weight(in Kg)"
           />
+          </div>}
           {!this.props.updatingUser && <div>
           <input
-            type="password"
-            value={this.state.confirmPword}
+            type ="password"
+            name ='pass'
+            value={this.state.pass}
             onChange={e => this.change(e)}
             placeholder="Password"
-            required
+       
           />
           <input
             type="password"
-            value={this.state.user}
-            onChange={e => this.change(e)}
+            name='confirmPword'
+            value={this.state.confirmPword}
+            onChange= {e => this.change(e)}
             placeholder="Confirm Password"
-            required
+    
           />
           </div>}
-          <button>{this.state.action}</button>
+          <button onClick={e => this.state.value(e)}>{this.state.action}</button>
         </form>
       </div>
     );
   }
 }
-const mapStateToProps = ({userReducer}) =>{
+const mapStateToProps = ({userReducer, registerReducer}) =>{
     return ({
-        updatingUser: userReducer.updatingUser
+        updatingUser: userReducer.updatingUser,
+        registering: registerReducer.registering
     })
 }
 export default connect(

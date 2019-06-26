@@ -8,6 +8,7 @@ const Authenticated =  authenticate(ExercisePage)(LoginPage)
 const Container = (props ) => {
     return(
     <Fragment>
+  
     <Authenticated  {...props}/>
     </Fragment>
     )
@@ -15,7 +16,8 @@ const Container = (props ) => {
 
 const mapStateToProps = ({loginReducer})=> {
     return ({
-    loggedIn: loginReducer.isLoggedIn
+    loggedIn: loginReducer.isLoggedIn,
+    loggingIn: loginReducer.loggingIn
     })
 }
 
