@@ -2,7 +2,95 @@ import React from "react";
 import uploader from "./upload";
 import { register, updateProfile, getProfile } from "../state/actionCreators";
 import { connect } from "react-redux";
+import styled from 'styled-components';
+import { FaUser, FaLock } from "react-icons/fa";
 
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  transform: translateY(-8vh);
+  h2 {
+    font-family: "Timmana", sans-serif;
+    text-align: center;
+  }
+`;
+
+const Form = styled.form`
+  background-color: white;
+  border-radius: 10px;
+  opacity:0.8;
+  padding-left: 5%;
+  padding-right:5%;
+  padding-top:7vh;
+  padding-bottom:3vh;
+  font-family: "Roboto" sans-serif;
+  display: flex;
+  flex-direction: column;
+`;
+const Div  = styled.div`
+ width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 4.2vh;
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 10%;
+      text-align: center;
+      color: white;
+      height: 3.8vh;
+      background-color: lightgreen;
+      border-radius: 5px 0px 0px 5px;
+      box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
+        0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    input {
+      width: 90%;
+      height: 3.8vh;
+      background-color: green;
+      outline: none;
+      border: none;
+      padding-left:5%;
+      border-radius: 0px 5px 5px 0px;
+      box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
+        0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        &::placeholder{
+            color:white;
+            font-size:1.5em;
+        }
+    }`
+
+const Button = styled.button`
+  width: 40%;
+  margin-left:30%;
+  margin-top:2%;
+  background-color: green;
+  padding: 0% 5%;
+  border-radius: 5px;
+  outline:none;
+  height:4vh;
+  font-size:1em;
+  color:white;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
+        0 6px 20px 0 rgba(0, 0, 0, 0.19);
+&:hover{
+    background-color:black;
+}`;
+const Registered = styled.div`
+    background-color:white;
+    opacity:0.8;
+    margin-top:3%;
+    border-radius:10px;
+    p{
+        color:green;
+        text-align:center;
+        font-weight:bolder;
+    }`;
+const Section = styled.div `
+`
 class Register extends React.Component {
   constructor(props) {
     super(props);
@@ -73,9 +161,14 @@ class Register extends React.Component {
   };
   render() {
     return (
-      <div>
-        {this.state.text}
-        <form onSubmit={e => this.state.value(e)}>
+      <Container>
+     
+        <Form onSubmit={e => this.state.value(e)}>
+        <h2>{this.state.text}</h2>
+        <Div>
+        <span>
+        <FaUser />
+      </span>
           <input
             type="text"
             name='username'
@@ -84,6 +177,7 @@ class Register extends React.Component {
             placeholder="Username"
             required
           />
+          </Div>
           {!this.props.registering && <div>
             <div>
             <button onClick={this.uploadPicture}>Upload Picture </button>
@@ -118,7 +212,12 @@ class Register extends React.Component {
             placeholder="Weight(in Kg)"
           />
           </div>}
-          {!this.props.updatingUser && <div>
+          {!this.props.updatingUser && 
+            <Section>
+            <Div>
+            <span>
+            <FaLock />
+          </span>
           <input
             type ="password"
             name ='pass'
@@ -127,6 +226,11 @@ class Register extends React.Component {
             placeholder="Password"
        
           />
+          </Div>
+          <Div>
+          <span>
+          <FaLock />
+        </span>
           <input
             type="password"
             name='confirmPword'
@@ -135,10 +239,16 @@ class Register extends React.Component {
             placeholder="Confirm Password"
     
           />
-          </div>}
-          <button onClick={e => this.state.value(e)}>{this.state.action}</button>
-        </form>
-      </div>
+          </Div>
+        
+          </Section>}
+          <Button onClick={e => this.state.value(e)}>{this.state.action}</Button>
+        </Form>
+        <Registered>
+        <p>Already Lifting?</p>
+        <Button onClick ={() =>this.props.openLogin()}>Login</Button>
+        </Registered>
+      </Container>
     );
   }
 }

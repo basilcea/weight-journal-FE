@@ -1,9 +1,9 @@
 import React ,{Fragment} from 'react';
 import authenticate from '../authenticate';
-import LoginPage from  './login';
+import LandingPage from  './modal';
 import ExercisePage from './exercises';
 import {connect} from 'react-redux'
-const Authenticated =  authenticate(ExercisePage)(LoginPage)
+const Authenticated =  authenticate(ExercisePage)(LandingPage)
 
 const Container = (props ) => {
     return(
