@@ -1,6 +1,6 @@
 import * as types from "./actionTypes";
 import axios from "axios";
-
+const url = 'https://weight-journal-backend.herokuapp.com'
 const loggedInAxios = () => {
   const token = localStorage.getItem("token") || false;
   const instance = axios.create({
@@ -27,7 +27,7 @@ export const failure = value => {
 export const register = data => async dispatch => {
   dispatch({ type: types.REGISTER });
   try {
-    const AxiosData = await axios.post('http://localhost:5000/auth/register', data);
+    const AxiosData = await axios.post(`${url}/api/register`, data);
     localStorage.setItem('token', AxiosData.data.token)
     dispatch(success());
   } catch (err) {
@@ -39,7 +39,7 @@ export const login = (data) => async dispatch => {
   dispatch({ type: types.LOGIN });
   
   try {
-    const AxiosData = await axios.post("http://localhost:5000/auth/login", data);
+    const AxiosData = await axios.post(`${url}/api/login`, data);
     localStorage.setItem("token", AxiosData.data.token);
     dispatch(success());
   } catch(err) {
@@ -74,7 +74,7 @@ export const getExercises = () => async dispatch => {
   dispatch({ type: types.FETCH_EXERCISES });
   try {
     const AxiosData = await loggedInAxios().get(
-      "http://localhost:5000/exercises"
+      `${url}/api/lifts`
     );
 
       dispatch(success(AxiosData.data));
