@@ -1,17 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { Link } from "react-router-dom";
 import Navbar from "./navbar";
 import Form from "./liftsForm";
-import WorkoutHistory from "./workoutHistory";
+import WorkoutHistory from "./liftstHistory";
 const Header = styled.div`
   width: 100%;
   height: 70vh;
-  background-size: contain;
-  background-color: black;
+ background-image:url('http://www.driftcentral.com/wp-content/uploads/2015/09/Dark-Grey-Background-Photo-HD-Wallpaper-2nwk9-Free.jpeg');
   margin-top: 8%;
+  background-size:contain;
   border-radius: 10px 10px 0 0;
 `;
 const Container = styled.div`
@@ -64,7 +61,7 @@ const LiftsSection = styled.div`
   display: flex;
   margin: 0;
   padding-top: 0;
-  background-color: black;
+  background-image:url('http://www.driftcentral.com/wp-content/uploads/2015/09/Dark-Grey-Background-Photo-HD-Wallpaper-2nwk9-Free.jpeg');
   transform: translateY(-34vh);
   min-height: 60vh;
 `;
@@ -81,18 +78,17 @@ const Button = styled.button`
   height: 20%;
 `;
 const Content = styled.div`
-  width: 60%;
-  margin: 0 20%;
+  width: 70%;
+  margin: 0 15%;
   min-height: 100%;
-  background-color: black;
 `;
 
 class Exercises extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      addWorkoutOpen: true,
-      WorkoutHistoryOpen: false,
+      addWorkoutOpen: false,
+      WorkoutHistoryOpen: true,
       liftsHistoryOpen: false
     };
   }
@@ -103,10 +99,10 @@ class Exercises extends React.Component {
       liftsHistoryOpen: false
     });
   };
-  openWorkoutHistory = () => {
+  openWorkoutHistory = value => {
     this.setState({
       addWorkoutOpen: false,
-      WorkoutHistoryOpen: true,
+      WorkoutHistoryOpen: value,
       liftsHistoryOpen: false
     });
   };
@@ -114,7 +110,7 @@ class Exercises extends React.Component {
     this.setState({
       addWorkoutOpen: false,
       WorkoutHistoryOpen: false,
-      liftsHistoryOpen: true,
+      liftsHistoryOpen: true
     });
   };
 
@@ -126,30 +122,32 @@ class Exercises extends React.Component {
           <Background />
         </Header>
         <Hero>
-          <div onClick ={() => this.openAddWorkout()}>
-            <h3>Add Workouts</h3>
-            <p>Keep Tracks of workouts as soon as you complete them</p>
-            <Button>View</Button>
-          </div>
-          <div onClick ={() => this.openWorkoutHistory()}>
-            <h3>Workouts History</h3>
+          <div onClick={() => this.openWorkoutHistory(true)}>
+            <h3>Lifts History</h3>
             <p>Track your progress daily. Compare workouts based on days</p>
             <Button>View</Button>
           </div>
-          <div onClick ={() => this.openLiftsHistory()}>
-            <h3>Lifts History</h3>
+
+          <div onClick={() => this.openLiftsHistory()}>
+            <h3>Lifts Progress</h3>
             <p>
               Track your progess on each lifting exercise. Compare workouts
               based on exercises
             </p>
             <Button>View</Button>
           </div>
+          <div onClick={() => this.openAddWorkout()}>
+            <h3>Add Lifts</h3>
+            <p>Keep Tracks of workouts as soon as you complete them</p>
+            <Button>View</Button>
+          </div>
         </Hero>
-
-        <h2> My Lifts</h2>
+        <h2>.</h2>
         <LiftsSection>
           <Content>
-            {this.state.addWorkoutOpen && <Form />}
+            {this.state.addWorkoutOpen && (
+              <Form added={this.openWorkoutHistory} />
+            )}
             {this.state.WorkoutHistoryOpen && <WorkoutHistory />}
           </Content>
         </LiftsSection>
@@ -158,4 +156,4 @@ class Exercises extends React.Component {
   }
 }
 
-export default Exercises
+export default Exercises;

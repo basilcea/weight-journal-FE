@@ -73,10 +73,7 @@ export const updateProfile = (userId ,data)=> async dispatch => {
 export const getExercises = () => async dispatch => {
   dispatch({ type: types.FETCH_EXERCISES });
   try {
-    const AxiosData = await loggedInAxios().get(
-      `${url}/api/lifts`
-    );
-
+    const AxiosData = await loggedInAxios().get(`${url}/api/lifts`);
       dispatch(success(AxiosData.data));
   } catch(err) {
       dispatch(failure(err.message));
@@ -86,8 +83,7 @@ export const getExercises = () => async dispatch => {
 export const addExercises = data => async dispatch => {
   dispatch({ type: types.ADD_EXERCISE });
   try {
-    await loggedInAxios().post("http://localhost:5000/exercises", data);
-    debugger
+    await loggedInAxios().post(`${url}/api/lifts`, data);
     dispatch(getExercises());
   } catch (err) {
     dispatch(failure(err.message));
@@ -98,7 +94,7 @@ export const deleteExercises = exerciseId => async dispatch => {
   dispatch({ type: types.DELETE_EXERCISE });
   try {
     await loggedInAxios().delete(
-      `http://localhost:3000/api/exercises/${exerciseId}`
+      `${url}/api/lifts/${exerciseId}`
     );
     dispatch(getExercises());
   } catch (err) {
@@ -110,10 +106,11 @@ export const updateExercises = (exerciseId, data) => async dispatch => {
   dispatch({ type: types.UPDATE_EXERCISE });
   try {
     await loggedInAxios().put(
-      `http:localhost:3000/api/exercises/${exerciseId}`,
+      `${url}/api/lifts/${exerciseId}`,
       data
     );
-    dispatch(getExercise());
+
+    dispatch(getExercises());
   } catch (err) {
     dispatch(failure(err.message));
   }
@@ -123,7 +120,7 @@ export const getExercise = exerciseId => async dispatch => {
   dispatch({ type: types.GET_EXERCISE });
   try {
     const AxiosData = await loggedInAxios().get(
-      `http:localhost:3000/api/exercises/${exerciseId}`
+      `${url}/api/lifts/${exerciseId}`
     );
     setTimeout(() => {
       dispatch(success(AxiosData.data));

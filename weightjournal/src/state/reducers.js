@@ -96,7 +96,7 @@ export const exercisesReducer = (
     fetchingExercises: false,
     deletingExercise: false,
     exercises: [],
-    error: null
+    error: null,
   },
   action
 ) => {
@@ -144,7 +144,7 @@ export const exerciseReducer = (
     addingWorkout: false,
     deletingWorkout: false,
     error: null,
-    exercise: []
+    exercise: {}
   },
   action
 ) => {

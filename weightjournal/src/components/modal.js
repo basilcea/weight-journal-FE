@@ -55,24 +55,6 @@ const Stripe2 = styled.div`
     10% 20%
   );
 `;
-
-const Thumbnails = styled.div`
-  display: flex;
-  border: 1px solid yellow;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 20vh;
-  div {
-    width: 30%;
-    height: 100%;
-    opacity: 1;
-    img {
-      width: 30px;
-      height: 60px;
-    }
-  }
-`;
 const SignUpContainer = styled.div`
   width: 30%;
   display: flex;

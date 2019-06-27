@@ -4,6 +4,7 @@ import LandingPage from './components/container'
 import ProfilePage from './components/profile'
 import ExercisePage from './components/exercise'
 import RegisterPage from './components/registerForm'
+import AddForm from './components/liftsForm'
 
 const App = () =>{
     return(
@@ -11,6 +12,7 @@ const App = () =>{
         <Route exact path ='/' component={LandingPage}/>
         <Route exact path='/:id' component={ExercisePage} />
         <Route exact path='/users/:id' component={ProfilePage} />
+        <Route exact path='/update/:id' component={AddForm}/>
         <Route exact path='/users/update/:id' component={RegisterPage} />
         </div>
     )

@@ -1,5 +1,4 @@
 import React, {  Fragment } from "react";
-import styled from "styled-components";
 import { connect } from "react-redux";
 import { getProfile } from "../state/actionCreators";
 import { Link } from "react-router-dom";
@@ -7,11 +6,6 @@ import { Link } from "react-router-dom";
 
 
 class Profile extends React.Component {
-    constructor(props){
-        super(props);
-  
-       
-    }
     componentDidMount(){
         this.props.getProfile(this.props.match.params.id);
     }
