@@ -43,7 +43,7 @@ const HistoryError = styled.div`
 const Image = styled.img`
   min-height: 100%;
   width: 47%;
-  border-radius:5px;
+  border-radius:50%;
 `;
 const Details = styled.div`
   ${props => (props.srcUrl ? `width: 47%` : `width: 100%`)};
