@@ -10,6 +10,10 @@ import {
 const History = styled.div`
   min-height: 100%;
   margin-top: 10%;
+ hr {
+   color:black;
+   font-size:2px
+ }
   h2 {
     text-align: center;
     color: white;
@@ -21,8 +25,9 @@ const HistoryFound = styled.div`
   color: white;
   display: flex;
   outline: none;
-  margin-bottom: 5%;
+  margin: 5% 0%;
   border-radius: 10px;
+  min-height:30vh;
   justify-content:space-between;
   span {
     color: green;
@@ -43,14 +48,13 @@ const HistoryError = styled.div`
 const Image = styled.img`
   min-height: 100%;
   width: 47%;
-  border-radius:50%;
+  border-radius:45%;
 `;
 const Details = styled.div`
   ${props => (props.srcUrl ? `width: 47%` : `width: 100%`)};
   ${props => (props.srcUrl ? `margin: 0%` : `margin: 0% 10%`)};
   ${props => (props.srcUrl ? `border:none` : `border:2px solid green`)};
   ${props => (props.srcUrl ? `border:none`:`border-radius: 10px`)};
-
 
   padding-top: 5%;
   padding-right: 3%;
@@ -124,11 +128,12 @@ const Newspan = styled.span`
 const Exercises = props => {
   useEffect(() => {
     props.getExercises();
-  }, [props]);
+  }, []);
 
   return (
     <History>
       <h2>My Lifts</h2>
+      <hr/>
       {props.exercises &&!props.error &&
         props.exercises.map(exercise => (
           <HistoryFound key={exercise.id}>
