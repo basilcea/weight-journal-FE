@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import decode from "./decode";
 import {
   getExercises,
   deleteExercises,
@@ -40,9 +41,14 @@ const HistoryFound = styled.div`
 `;
 const HistoryError = styled.div`
   h3 {
-    color: white;
+    color: green;
     text-align: center;
     font-size: 2rem;
+  }
+  p{
+    color:white;
+    text-align:center;
+    font-size:1.5em;
   }
 `;
 const Image = styled.img`
@@ -127,7 +133,8 @@ const Newspan = styled.span`
 `;
 const Exercises = props => {
   useEffect(() => {
-    props.getExercises();
+    console.log(decode.subject)
+    props.getExercises(decode().subject);
   }, []);
 
   return (
@@ -179,17 +186,17 @@ const Exercises = props => {
               <Actions>
                 <Link to={`/update/${exercise.id}`}> Edit </Link>
 
-                <Button onClick={() => props.deleteExercises(exercise.id)}>
+                <Button onClick={() => props.deleteExercises(this.state.user_id,exercise.id)}>
                   Delete
                 </Button>
               </Actions>
             </Details>
           </HistoryFound>
         ))}
-      {props.error && (
+      {(
         <HistoryError>
-          <h3>Yet to Lift</h3>
-          <Button>Add Workout</Button>
+          <h3>No Lifts</h3>
+          <p>Click Add Lifts above and get started</p>
         </HistoryError>
       )}
     </History>

@@ -107,7 +107,7 @@ constructor(props){
 }
     componentDidMount() {
 
-        this.props.getExercises();
+        this.props.getExercises(this.state.user_id);
         if (
             this.props.location &&
             this.props.location.pathname ===
@@ -139,7 +139,7 @@ constructor(props){
 
     update = e => {
         e.preventDefault();
-      this.props.updateExercises(this.props.match.params.id,{
+      this.props.updateExercises(this.state.user_id,this.props.match.params.id,{
         user_id: decoded().subject,
         name: this.state.name,
         sets: this.state.sets,
@@ -153,7 +153,7 @@ constructor(props){
     };
     add = e => {
       e.preventDefault();
-      this.props.addExercises({
+      this.props.addExercises(this.state.user_id, {
         user_id: decoded().subject,
         name: this.state.name,
         sets: this.state.sets,
@@ -200,11 +200,13 @@ constructor(props){
           </div>
           <div>
           <input name='sets' value={this.state.sets} type="number" placeholder="Add Sets"   onChange={event => this.change(event)}  />
-          <input name='repsPerSet' value={this.state.repsRepSet}type="number" placeholder="Add Reps" ref={this.repsRef}   onChange={event => this.change(event)}/>
+          <input name='repsPerSet' value={this.state.repsPerSet} type="number" placeholder="Add Reps"  onChange={event => this.change(event)}/>
           <input
             type="number"
+            name='weight'
+            value={this.state.weight}
             placeholder="Add Weights"
-            ref={this.weightsRef}
+            onChange={event => this.change(event)}
           />
           </div>
           <Textarea name='notes' placeholder="Add Notes" value={this.state.notes}   onChange={event => this.change(event)}/>
@@ -216,7 +218,7 @@ constructor(props){
      }
  }
 
- const mapStateToProps = ({ exercisesReducer, exerciseReducer }) => {
+ const mapStateToProps = ({ exercisesReducer }) => {
     return {
       exercises: exercisesReducer.exercises,
       error: exercisesReducer.error,

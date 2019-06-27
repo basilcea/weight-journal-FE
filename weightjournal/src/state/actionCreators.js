@@ -70,39 +70,39 @@ export const updateProfile = (userId ,data)=> async dispatch => {
   }
 };
 
-export const getExercises = () => async dispatch => {
+export const getExercises = (id) => async dispatch => {
   dispatch({ type: types.FETCH_EXERCISES });
   try {
-    const AxiosData = await loggedInAxios().get(`${url}/api/lifts`);
+    const AxiosData = await loggedInAxios().get(`${url}/api/users/${id}/lifts`);
       dispatch(success(AxiosData.data));
   } catch(err) {
       dispatch(failure(err.message));
 }
 }
 
-export const addExercises = data => async dispatch => {
+export const addExercises = (id,data) => async dispatch => {
   dispatch({ type: types.ADD_EXERCISE });
   try {
     await loggedInAxios().post(`${url}/api/lifts`, data);
-    dispatch(getExercises());
+    dispatch(getExercises(id));
   } catch (err) {
     dispatch(failure(err.message));
   }
 };
 
-export const deleteExercises = exerciseId => async dispatch => {
+export const deleteExercises = (id,exerciseId) => async dispatch => {
   dispatch({ type: types.DELETE_EXERCISE });
   try {
     await loggedInAxios().delete(
       `${url}/api/lifts/${exerciseId}`
     );
-    dispatch(getExercises());
+    dispatch(getExercises(id));
   } catch (err) {
     dispatch(failure(err.message));
   }
 };
 
-export const updateExercises = (exerciseId, data) => async dispatch => {
+export const updateExercises = (id,exerciseId, data) => async dispatch => {
   dispatch({ type: types.UPDATE_EXERCISE });
   try {
     await loggedInAxios().put(
@@ -110,7 +110,7 @@ export const updateExercises = (exerciseId, data) => async dispatch => {
       data
     );
 
-    dispatch(getExercises());
+    dispatch(getExercises(id));
   } catch (err) {
     dispatch(failure(err.message));
   }
@@ -196,7 +196,7 @@ export const logout = () => async dispatch => {
             `http:localhost:3000/api/logout `
 
         ) */
-    localStorage.clearItem("token");
+    localStorage.clear("token");
     dispatch(success(false));
   } catch (err) {
     dispatch(failure(err.message));

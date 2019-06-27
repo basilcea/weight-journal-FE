@@ -2,8 +2,11 @@ import React from "react";
 import styled from "styled-components";
 // import { FaUserCircle } from "react-icons/fa";
 import { FaPowerOff, FaDumbbell } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { NavLink ,Redirect} from "react-router-dom";
 import decode from "./decode";
+import {logout} from '../state/actionCreators'
+import {connect} from 'react-redux';
+
 
 const Container = styled.div`
   opacity: 0.8;
@@ -64,16 +67,20 @@ align-items:center;
       color:white;
   }
 `;
-const Navbar = () => {
+const Navbar = (props) => {
   const id = decode().subject;
   const username = decode().username;
   const name = username.replace(
     username.charAt(0),
     username.charAt(0).toUpperCase()
-  );
-
+  ); 
+  const logout= ()=>{
+    props.logout()
+    window.location.reload()
+  }
   return (
     <Container>
+    {console.log(props)}
     <Logo><div><FaDumbbell/></div>
     <h1> Lifted</h1></Logo>
     
@@ -86,11 +93,11 @@ const Navbar = () => {
             {username} 
             </div>*/}
         </NavLink>
-        <button>
+        <button onClick={() =>logout()}>
             <FaPowerOff />
         </button>
       </RightSection>
     </Container>
   );
 };
-export default Navbar;
+export default connect(null , {logout}) (Navbar)

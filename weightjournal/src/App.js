@@ -4,7 +4,8 @@ import LandingPage from './components/container'
 import ProfilePage from './components/profile'
 import ExercisePage from './components/exercise'
 import RegisterPage from './components/registerForm'
-import AddForm from './components/liftsForm'
+import AddForm from './components/liftsForm';
+
 
 const App = () =>{
     return(
