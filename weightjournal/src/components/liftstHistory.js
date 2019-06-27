@@ -186,7 +186,7 @@ const Exercises = props => {
               <Actions>
                 <Link to={`/update/${exercise.id}`}> Edit </Link>
 
-                <Button onClick={() => props.deleteExercises(this.state.user_id,exercise.id)}>
+                <Button onClick={() => props.deleteExercises(decode().subject,exercise.id)}>
                   Delete
                 </Button>
               </Actions>
