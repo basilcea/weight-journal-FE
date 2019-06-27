@@ -1,23 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import {
-  getExercises,
-  deleteExercises,
-  addExercises
-} from "../state/actionCreators";
 import { Redirect } from "react-router-dom";
-import { nameArray, targetArray } from "../data";
 import { Link } from "react-router-dom";
 import Navbar from "./navbar";
 import Form from "./liftsForm";
-
+import WorkoutHistory from "./workoutHistory";
 const Header = styled.div`
   width: 100%;
   height: 70vh;
   background-size: contain;
   background-color: black;
-  margin: 0;
+  margin-top: 8%;
   border-radius: 10px 10px 0 0;
 `;
 const Container = styled.div`
@@ -102,27 +96,24 @@ class Exercises extends React.Component {
       liftsHistoryOpen: false
     };
   }
-  componentDidMount() {
-    this.props.getExercises();
-  }
   openAddWorkout = () => {
     this.setState({
       addWorkoutOpen: true,
-      dailyHistoryOpen: false,
+      WorkoutHistoryOpen: false,
       liftsHistoryOpen: false
     });
   };
   openWorkoutHistory = () => {
     this.setState({
       addWorkoutOpen: false,
-      dailyHistoryOpen: true,
+      WorkoutHistoryOpen: true,
       liftsHistoryOpen: false
     });
   };
   openLiftsHistory = () => {
     this.setState({
       addWorkoutOpen: false,
-      dailyHistoryOpen: false,
+      WorkoutHistoryOpen: false,
       liftsHistoryOpen: true,
     });
   };
@@ -159,24 +150,7 @@ class Exercises extends React.Component {
         <LiftsSection>
           <Content>
             {this.state.addWorkoutOpen && <Form />}
-            {!this.props.error &&
-              this.props.exercises &&
-              this.props.exercises.map(exercise => {
-                return (
-                  <div key={exercise.id}>
-                    <div onClick={() => <Redirect to={`/${exercise.id}`} />}>
-                      {exercise.name}
-                      {exercise.bodyRegion}
-                    </div>
-                    <Link to={`/${exercise.id}`}>View</Link>
-                    <button
-                      onClick={() => this.props.deleteExercises(exercise.id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                );
-              })}
+            {this.state.WorkoutHistoryOpen && <WorkoutHistory />}
           </Content>
         </LiftsSection>
       </Container>
@@ -184,14 +158,4 @@ class Exercises extends React.Component {
   }
 }
 
-const mapStateToProps = ({ exercisesReducer }) => {
-  return {
-    exercises: exercisesReducer.exercises,
-    error: exercisesReducer.error
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  { getExercises, deleteExercises, addExercises }
-)(Exercises);
+export default Exercises

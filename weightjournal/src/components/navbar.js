@@ -7,9 +7,14 @@ import decode from "./decode";
 
 const Container = styled.div`
   opacity: 0.8;
-  width: 100%;
+  width: 76%;
   z-index: 2;
   display: flex;
+  position:fixed;
+  top:0;
+  margin-top:0;
+  background-color:white;
+  padding:0 2%;
   h1 {
     padding-left: 5%;
     color: green;

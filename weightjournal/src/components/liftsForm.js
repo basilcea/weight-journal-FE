@@ -52,6 +52,9 @@ const Textarea = styled.textarea`
   padding-left:5%;
   padding-top:2%;
   outline:none;
+  &::placeholder{
+      color:white;
+  }
 `;
 const Button = styled.button`
   text-align: center;
@@ -66,6 +69,9 @@ const Button = styled.button`
   height: 3vh;
 `;
  class Formed extends React.Component {
+     constructor(props){
+         super(props)
+     }
     componentDidMount() {
         this.props.getExercises();
       }
@@ -126,21 +132,21 @@ const Button = styled.button`
           <datalist id="names">{data}</datalist>
           <input
             list="parts"
-            placeholder="Body Target"
+            placeholder="Add Body Target"
             ref={this.bodyRef}
           />
           <datalist id="parts">{bodyParts}</datalist>
           </div>
           <div>
-          <input type="number" placeholder="Sets" ref={this.setsRef} />
-          <input type="number" placeholder="Reps" ref={this.repsRef} />
+          <input type="number" placeholder="Add Sets" ref={this.setsRef} />
+          <input type="number" placeholder="Add Reps" ref={this.repsRef} />
           <input
             type="number"
-            placeholder="Weights"
+            placeholder="Add Weights"
             ref={this.weightsRef}
           />
           </div>
-          <Textarea placeholder="Add comments" ref={this.commentRefs} />
+          <Textarea placeholder="Add Notes" ref={this.commentRefs} />
           <Button>Add </Button>
         </Form>
          )
