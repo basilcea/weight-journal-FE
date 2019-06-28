@@ -8,6 +8,7 @@ import { FaUser } from "react-icons/fa";
 const Container = styled.div`
   display: flex;
   justify-content: flex-start;
+  background-color:teal;
   background-image: url("https://wallpaperplay.com/walls/full/7/b/5/32717.jpg");
   background-size: cover;
   background-position: left center;

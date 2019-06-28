@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import moment from 'moment';
 import decode from "./decode";
 import {
   getExercises,
@@ -54,7 +55,7 @@ const HistoryError = styled.div`
 const Image = styled.img`
   min-height: 100%;
   width: 47%;
-  border-radius:45%;
+  border-radius:0%;
 `;
 const Details = styled.div`
   ${props => (props.srcUrl ? `width: 47%` : `width: 100%`)};
@@ -89,6 +90,7 @@ const Button = styled.button`
     background-color: black;
   }
 `;
+const Moment =(value) => moment(value).calendar()
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
@@ -136,13 +138,12 @@ const Exercises = props => {
     console.log(decode.subject)
     props.getExercises(decode().subject);
   }, []);
-
+const sortedExercises = props.exercises && props.exercises.sort((a,b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
   return (
     <History>
       <h2>My Lifts</h2>
       <hr/>
-      {props.exercises &&!props.error &&
-        props.exercises.map(exercise => (
+           {props.exercises && !props.error && sortedExercises.map(exercise => (
           <HistoryFound key={exercise.id}>
           {exercise.src_url && <Image src={exercise.src_url} alt="" />}
             <Details srcUrl={exercise.src_url}>
@@ -151,7 +152,7 @@ const Exercises = props => {
                   <span>Lift: </span>
                   {exercise.name}
                 </h3>
-                <span>{exercise.created_at}</span>
+                <span>{Moment(exercise.created_at)}</span>
               </Header>
               <div>
                 <span>
@@ -193,7 +194,7 @@ const Exercises = props => {
             </Details>
           </HistoryFound>
         ))}
-      {(
+      {props.exercises && props.exercises.length === 0 && (
         <HistoryError>
           <h3>No Lifts</h3>
           <p>Click Add Lifts above and get started</p>

@@ -9,8 +9,10 @@ const LoginContainer = styled.div`
   flex-direction: column;
   transform: translateY(-8vh);
   h2 {
-    font-family: "Timmana", sans-serif;
+    font-family: "Roboto", sans-serif;
     text-align: center;
+    font-weight:bold;
+    font-size:1.5em;
   }
 `;
 const Form = styled.form`

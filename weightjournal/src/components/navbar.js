@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 // import { FaUserCircle } from "react-icons/fa";
 import { FaPowerOff, FaDumbbell } from "react-icons/fa";
-import { NavLink ,Redirect} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import decode from "./decode";
 import {logout} from '../state/actionCreators'
 import {connect} from 'react-redux';
@@ -80,7 +80,6 @@ const Navbar = (props) => {
   }
   return (
     <Container>
-    {console.log(props)}
     <Logo><div><FaDumbbell/></div>
     <h1> Lifted</h1></Logo>
     
