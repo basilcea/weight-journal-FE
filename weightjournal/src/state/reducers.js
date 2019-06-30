@@ -1,7 +1,7 @@
 import * as types from "./actionTypes";
 
 export const userReducer = (
-  state = { gettingUser: false, updatingUser: false, user: [], error: null },
+  state = { gettingUser: false, updatingUser: false,deletingUser:false, user: [], error: null },
   action
 ) => {
   switch (action.type) {
@@ -9,9 +9,9 @@ export const userReducer = (
       return { ...state, gettingUser: true };
     case types.UPDATE_USER:
       return { ...state, updatingUser: true };
-    // case types.DELETE_USER:
-    //   return {...state , deletingUser:true};
-    case types.SUCCESS:
+    case types.DELETE_USER:
+     return {...state , deletingUser:true};
+    case types.USER_SUCESS:
       return {
         ...state,
         user: action.payload,
@@ -19,7 +19,7 @@ export const userReducer = (
         updatingUser: false,
         error: null
       };
-    case types.FAILURE:
+    case types.USER_FAILURE:
       return {
         ...state,
         error: action.payload,
@@ -33,6 +33,7 @@ export const userReducer = (
 
 export const loginReducer = (
   state = {
+    registering:false,
     loggingIn: false,
     loggingOut: false,
     isLoggedIn: localStorage.getItem("token") && true,
@@ -41,11 +42,13 @@ export const loginReducer = (
   action
 ) => {
   switch (action.type) {
+    case types.REGISTER:
+      return { ...state, registering: true };
     case types.LOGIN:
       return { ...state, loggingIn: true };
     case types.LOGOUT:
       return { ...state, loggingOut: true };
-    case types.SUCCESS:
+    case types.LOGIN_SUCESS:
       return {
         ...state,
         loggingIn: false,
@@ -53,7 +56,7 @@ export const loginReducer = (
         isLoggedIn: true,
         error: null
       };
-    case types.FAILURE:
+    case types.LOGIN_FAILURE:
       return {
         ...state,
         loggingIn: false,
@@ -91,7 +94,7 @@ export const exercisesReducer = (
         ...state,
         deletingExercise: true
       };
-    case types.SUCCESS:
+    case types.EXERCISES_SUCCESS:
       return {
         ...state,
         exercises: action.payload,
@@ -100,7 +103,7 @@ export const exercisesReducer = (
         deletingExercise: false,
         error: null
       };
-    case types.FAILURE:
+    case types.EXERCISES_FAILURE:
       return {
         ...state,
         addingExercise: false,
@@ -112,7 +115,7 @@ export const exercisesReducer = (
       return state;
   }
 };
-export const exeReducer = (
+export const exerciseReducer = (
   state = {
     gettingExercise: "initial",
     updatingExercise: false,
@@ -129,7 +132,7 @@ export const exeReducer = (
         ...state,
         gettingExercise: true
       };
-    case types.SUCCESSFUL:
+    case types.EXERCISE_SUCCESS:
       return {
         ...state,
         exercise: action.payload,
@@ -139,7 +142,7 @@ export const exeReducer = (
         deletingWorkout: false,
         error: null
       };
-    case types.FAILURE:
+    case types.EXERCISE_FAILURE:
       return {
         ...state,
         gettingExercise: false,

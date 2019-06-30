@@ -24,22 +24,23 @@ import decode from './decode';
 //   margin-bottom: 2px;
 // }
 // `;
-// const Button = styled.button`
-// width: 100%;
-// margin-right: 2%;
-// margin-top: 2%;
-// background-color: green;
-// padding: 0% 5%;
-// border-radius: 5px 5px 0px 0px;
-// outline: none;
-// height: 4vh;
-// font-size: 1em;
-// color: white;
-// box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-// &:hover {
-//   background-color: black;
-// }
-// `;
+const ViewButton = styled.button`
+${props => (props.check? `display: none` : `display: block`)};
+width: 100%;
+margin-right: 2%;
+margin-top: 2%;
+background-color: green;
+padding: 0% 5%;
+border-radius: 5px 5px 0px 0px;
+outline: none;
+height: 4vh;
+font-size: 1em;
+color: white;
+box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+&:hover {
+  background-color: black;
+}
+`;
 // const Moment =(value) => moment(value).calendar()
 // const Header = styled.div`
 // display: flex;
@@ -71,7 +72,7 @@ class Progress extends React.Component{
         super(props)
         this.state=({
             isView:false,
-            id:null
+            id:0
         })
     }
   
@@ -82,6 +83,12 @@ class Progress extends React.Component{
             id: divId
         })
         
+    }
+    closeLiftDetails=(divId)=>{
+        this.setState({
+            isView:false,
+            id: ''
+        })
     }
     Moment =(value) => moment(value).calendar()
 
@@ -97,11 +104,12 @@ class Progress extends React.Component{
             <div key={lift.name}>
             <img src={lift.url} alt=''/>
             <p>{lift.name}</p>
-            <button onClick ={() =>this.getLiftDetails(decode().subject, lift.name ,lift.name)}>View</button>
+            <ViewButton check={lift.name === this.state.id} onClick ={() =>this.getLiftDetails(decode().subject, lift.name ,lift.name)}>View</ViewButton>
+            {this.state.isView && this.state.id === lift.name && 
+                <button onClick ={() =>this.closeLiftDetails(lift.name)}>Close</button>
+            }
             <div>
-            {this.state.isView && this.state.id === lift.name && this.props.exercise && <div>
-                <h1>{lift.name} progess</h1>
-                {this.props.exercise.map(exercise => 
+            {this.state.isView && this.state.id === lift.name && this.props.exercise && this.props.exercise.map(exercise => 
                 <div key={exercise.id}>
                 <p>{this.Moment(exercise.created_at)}</p>
                 <p>Target Region: {exercise.bodyRegion}</p>
@@ -111,19 +119,26 @@ class Progress extends React.Component{
                 <button onClick= {()=>this.props.editing(exercise.id)}>Edit</button>
                 <button onClick = {() => this.props.deleteExercises(decode().subject,exercise.id)}>Delete</button>
                 </div>)}
-            </div>}
             
             </div>
             </div>
             ) }
+            {newObject && newObject.length === 0 && (
+                <div>
+                  <h3>No Lifts</h3>
+                  <p>Click Add Lifts above and get started</p>
+                </div>
+              )}
+
+
         </Div>
     )
 }
 }
-export const mapStateToProps = ({exercisesReducer, exeReducer}) =>{
+export const mapStateToProps = ({exercisesReducer, exerciseReducer}) =>{
     return({
         exercises:exercisesReducer.exercises,
-        exercise:exeReducer.exercise
+        exercise:exerciseReducer.exercise
      })
 }
 

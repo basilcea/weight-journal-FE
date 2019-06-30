@@ -252,10 +252,10 @@ class Register extends React.Component {
     );
   }
 }
-const mapStateToProps = ({userReducer, registerReducer}) =>{
+const mapStateToProps = ({userReducer, loginReducer}) =>{
     return ({
         updatingUser: userReducer.updatingUser,
-        registering: registerReducer.registering
+        registering: loginReducer.registering
     })
 }
 export default connect(

@@ -11,34 +11,65 @@ const loggedInAxios = () => {
   });
   return instance;
 };
-export const success = value => {
+export const exercisesSuccess = value => {
   return {
-    type: types.SUCCESS,
+    type: types.EXERCISES_SUCCESS,
     payload: value
   };
 };
-export const successful = value => {
+export const exercisesFailure = value => {
   return {
-    type: types.SUCCESSFUL,
+    type: types.EXERCISE_FAILURE,
+    payload: value
+  };
+};
+export const exerciseSuccess = value => {
+  return {
+    type: types.EXERCISE_SUCCESS,
+    payload: value
+  };
+};
+export const exerciseFailure = value => {
+  return {
+    type: types.EXERCISE_FAILURE,
+    payload: value
+  };
+};
+export const userSuccess = value => {
+  return {
+    type: types.USER_SUCESS,
+    payload: value
+  };
+};
+export const userFailure = value => {
+  return {
+    type: types.USER_FAILURE,
+    payload: value
+  };
+};
+export const loginSuccess = value => {
+  return {
+    type: types.LOGIN_SUCESS,
+    payload: value
+  };
+};
+export const loginFailure = value => {
+  return {
+    type: types.LOGIN_FAILURE,
     payload: value
   };
 };
 
-export const failure = value => {
-  return {
-    type: types.FAILURE,
-    payload: value
-  };
-};
+
 
 export const register = data => async dispatch => {
   dispatch({ type: types.REGISTER });
   try {
     const AxiosData = await axios.post(`${url}/api/register`, data);
     localStorage.setItem('token', AxiosData.data.token)
-    dispatch(success());
+    dispatch(loginSuccess());
   } catch (err) {
-    dispatch(failure(err.message));
+    dispatch(loginFailure(err.message));
   }
 };
 
@@ -48,9 +79,9 @@ export const login = (data) => async dispatch => {
   try {
     const AxiosData = await axios.post(`${url}/api/login`, data);
     localStorage.setItem("token", AxiosData.data.token);
-    dispatch(success());
+    dispatch(loginSuccess());
   } catch(err) {
-    dispatch(failure(err.message));
+    dispatch(loginFailure(err.message));
   }
 };
 export const getProfile = userId => async dispatch => {
@@ -59,21 +90,30 @@ export const getProfile = userId => async dispatch => {
     const AxiosData = await loggedInAxios().get(
       `${url}/api/users/${userId}`
     );
-    dispatch(success(AxiosData.data));
+    dispatch(userSuccess(AxiosData.data));
   } catch(err) {
-    dispatch(failure(err.message));
+    dispatch(userFailure(err.message));
   }
 };
-// export const deleteProfile = (userId) => async dispatch => {
+ export const deleteProfile = (userId) => async dispatch => {
+   dispatch({type: types.DELETE_USER});
+   dispatch({ type: types.UPDATE_USER });
+  try {
+    await loggedInAxios().delete(`${url}/api/user/${userId}`);
+    localStorage.clear('token')
+    dispatch(userSuccess());
+  } catch (err) {
+    dispatch(userFailure(err.message));
+  }
 
-// }
+ }
 export const updateProfile = (userId ,data)=> async dispatch => {
   dispatch({ type: types.UPDATE_USER });
   try {
     await loggedInAxios().put(`http://localhost:3000/api/user/${userId}`, data);
     dispatch(getProfile(userId));
   } catch (err) {
-    dispatch(failure(err.message));
+    dispatch(userFailure(err.message));
   }
 };
 
@@ -81,9 +121,9 @@ export const getExercises = (id) => async dispatch => {
   dispatch({ type: types.FETCH_EXERCISES });
   try {
     const AxiosData = await loggedInAxios().get(`${url}/api/users/${id}/lifts`);
-      dispatch(success(AxiosData.data));
+      dispatch(exercisesSuccess(AxiosData.data));
   } catch(err) {
-      dispatch(failure(err.message));
+      dispatch(exercisesFailure(err.message));
 }
 }
 
@@ -93,7 +133,7 @@ export const addExercises = (id,data) => async dispatch => {
     await loggedInAxios().post(`${url}/api/lifts`, data);
     dispatch(getExercises(id));
   } catch (err) {
-    dispatch(failure(err.message));
+    dispatch(exercisesFailure(err.message));
   }
 };
 
@@ -105,7 +145,7 @@ export const deleteExercises = (id,exerciseId) => async dispatch => {
     );
     dispatch(getExercises(id));
   } catch (err) {
-    dispatch(failure(err.message));
+    dispatch(exercisesFailure(err.message));
   }
 };
 
@@ -119,7 +159,7 @@ export const updateExercises = (id,exerciseId, data) => async dispatch => {
 
     dispatch(getExercises(id));
   } catch (err) {
-    dispatch(failure(err.message));
+    dispatch(exerciseFailure(err.message));
   }
 };
 
@@ -131,11 +171,11 @@ export const getExercise = (userId, name) => async dispatch => {
       `${url}/api/users/${userId}/${name}`
      
     );
-      dispatch(successful(AxiosData.data));
+      dispatch(exerciseSuccess(AxiosData.data));
    
   } catch (err){
     setTimeout(() => {
-      dispatch(failure(err.message));
+      dispatch(exerciseFailure(err.message));
     }, 3000);
     
   }
@@ -150,8 +190,8 @@ export const logout = () => async dispatch => {
 
         ) */
     localStorage.clear("token");
-    dispatch(success(false));
+    dispatch(loginSuccess(false));
   } catch (err) {
-    dispatch(failure(err.message));
+    dispatch(loginFailure(err.message));
   }
 };
