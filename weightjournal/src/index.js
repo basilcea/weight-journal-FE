@@ -6,12 +6,12 @@ import { createStore, applyMiddleware, combineReducers, compose } from "redux";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 import App from  './App';
-import { exerciseReducer, workoutReducer,exercisesReducer ,loginReducer, registerReducer , userReducer} from "./state/reducers";
+import { exeReducer, workoutReducer,exercisesReducer ,loginReducer, registerReducer , userReducer} from "./state/reducers";
 
 const combinedReducer = combineReducers({
   registerReducer,
   exercisesReducer,
-  exerciseReducer,
+  exeReducer,
   workoutReducer,
   loginReducer,
   userReducer

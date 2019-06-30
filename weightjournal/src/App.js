@@ -13,7 +13,6 @@ const App = () =>{
         <Route exact path ='/' component={LandingPage}/>
         <Route exact path='/:id' component={ExercisePage} />
         <Route exact path='/users/:id' component={ProfilePage} />
-        <Route exact path='/update/:id' component={AddForm}/>
         <Route exact path='/users/update/:id' component={RegisterPage} />
         </div>
     )

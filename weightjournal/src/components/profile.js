@@ -2,7 +2,7 @@ import React, {  Fragment } from "react";
 import { connect } from "react-redux";
 import { getProfile } from "../state/actionCreators";
 import { Link } from "react-router-dom";
-
+import Navbar from './navbar'
 
 
 class Profile extends React.Component {
@@ -16,6 +16,7 @@ class Profile extends React.Component {
  render(){
   return (
     <Fragment>
+    <Navbar />
       {!this.props.error && (
         <div>
           <img src={this.props.user.src} alt="" />

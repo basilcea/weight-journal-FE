@@ -1,6 +1,7 @@
 import * as types from "./actionTypes";
 import axios from "axios";
-const url = 'https://weight-journal-backend.herokuapp.com'
+// const url = 'https://weight-journal-backend.herokuapp.com'
+const url ='http://localhost:7000'
 const loggedInAxios = () => {
   const token = localStorage.getItem("token") || false;
   const instance = axios.create({
@@ -13,6 +14,12 @@ const loggedInAxios = () => {
 export const success = value => {
   return {
     type: types.SUCCESS,
+    payload: value
+  };
+};
+export const successful = value => {
+  return {
+    type: types.SUCCESSFUL,
     payload: value
   };
 };
@@ -50,7 +57,7 @@ export const getProfile = userId => async dispatch => {
   dispatch({ type: types.GET_USER });
   try {
     const AxiosData = await loggedInAxios().get(
-      `http://localhost:5000/user/${userId}`
+      `${url}/api/users/${userId}`
     );
     dispatch(success(AxiosData.data));
   } catch(err) {
@@ -116,75 +123,21 @@ export const updateExercises = (id,exerciseId, data) => async dispatch => {
   }
 };
 
-export const getExercise = exerciseId => async dispatch => {
+
+export const getExercise = (userId, name) => async dispatch => {
   dispatch({ type: types.GET_EXERCISE });
   try {
     const AxiosData = await loggedInAxios().get(
-      `${url}/api/lifts/${exerciseId}`
+      `${url}/api/users/${userId}/${name}`
+     
     );
-    setTimeout(() => {
-      dispatch(success(AxiosData.data));
-    }, 3000); 
+      dispatch(successful(AxiosData.data));
+   
   } catch (err){
     setTimeout(() => {
       dispatch(failure(err.message));
     }, 3000);
     
-  }
-};
-export const addWorkout = (exerciseId, data) => async dispatch => {
-  // for the short reps use only (data)
-  dispatch({ type: types.ADD_WORKOUT });
-  try {
-    await loggedInAxios().post(
-      `http:localhost:3000/api/exercises/${exerciseId}`,
-      data
-    );
-    // await loggedInAxios().post(`http:localhost:3000/api/reps`, data)
-    dispatch(getExercise(exerciseId));
-  } catch (err) {
-    dispatch(failure(err.message));
-  }
-};
-
-// ask the backend guy if it best to use the long url or the short url
-export const deleteWorkout = (exerciseId, workoutId) => async dispatch => {
-  // (repId)
-  dispatch({ type: types.DELETE_WORKOUT });
-  try {
-    await loggedInAxios().delete(
-      `http:localhost:3000/api/exercises/${exerciseId}/workout/${workoutId}`
-    );
-    // await loggedInAxios().post(`http:localhost:3000/api/reps/${repId}`)
-    dispatch(getExercise(exerciseId));
-  } catch (err) {
-    dispatch(failure(err.message));
-  }
-};
-export const getWorkouts = (exerciseId) => async dispatch => {
-  dispatch({ type: types.GET_WORKOUTS });
- 
-  try {
-    const AxiosData = await loggedInAxios().get(
-      `http:localhost:3000/api/exercises/${exerciseId}/workout`
-    );
-    dispatch(success(AxiosData.data));
-  } catch(err) {
-    dispatch(failure(err.message));
-  }
-};
-
-export const updateWorkout = (exerciseId, workoutId, data) => async dispatch => {
-  // (repId , data)
-  dispatch({ type: types.UPDATE_WORKOUT });
-  try {
-    await loggedInAxios().put(
-      `http:localhost:3000/api/exercise/${exerciseId}/workout/${workoutId}`,
-      data
-    );
-    dispatch(getWorkouts(exerciseId, workoutId));
-  } catch (err) {
-    dispatch(failure(err.message));
   }
 };
 

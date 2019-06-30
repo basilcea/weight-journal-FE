@@ -6,21 +6,9 @@ import { addExercises ,getExercises ,updateExercises,
 import { nameArray, targetArray } from "../data";
 import decoded from "./decode";
 
-
-const Div = styled.div`
-width:100%;
-    ${props => ( props.url && `min-height: 100vh` )};
-    ${props => ( props.url && `display: flex` )};
-    ${props => ( props.url && `justify-content: center` )};
-    ${props => ( props.url && `align-items:center` )};
-    ${props => ( props.url && `background-position:center` )};
-    ${props => ( props.url && `background-size:cover` )};
-    ${props => ( props.url && `background-image:url('https://wallpaperplay.com/walls/full/7/b/5/32717.jpg') `)};
-
-`; 
 const Form = styled.form`
-   ${props => ( props.url ? `width: 50%` : `width: 100%`)};
-   ${props => ( props.url ? `margin-top: 0%` : `margin-top: 10%`)};
+   width:80%;
+   margin:10%;
   border-radius: 10px;
   border:1px solid green;
   background-image:url('http://www.driftcentral.com/wp-content/uploads/2015/09/Dark-Grey-Background-Photo-HD-Wallpaper-2nwk9-Free.jpeg');
@@ -108,38 +96,55 @@ constructor(props){
     componentDidMount() {
 
         this.props.getExercises(this.state.user_id);
-        if (
-            this.props.location &&
-            this.props.location.pathname ===
-              `/update/${this.props.match.params.id}`
-          ) {
-              const exercise = this.props.exercises.find(
-                lift => lift.id === Number(this.props.match.params.id)
-              )
-              exercise && this.setState({
-                user_id:decoded().subject,
-                name: exercise.name,
-                sets:exercise.sets,
-                weight: exercise.weight,
-                bodyRegion: exercise.bodyRegion,
-                repsPerSet: exercise.repsPerSet,
-                notes:exercise.notes,
-                src_url:exercise.src_url,
-                text:'Update My Lifts',
-                action:'Update',
-                value:this.update  
-              })
-          }
+        
       } 
-      added=value => value
+      componentWillReceiveProps(np){
+        console.log(np)
+        if (
+          np.isEditing
+         
+        ) { 
+            const exercise = np.exercises.find(
+              lift => lift.id === Number(this.props.liftId)
+            )
+            exercise && this.setState({
+              user_id:decoded().subject,
+              name: exercise.name,
+              sets:exercise.sets,
+              weight: exercise.weight,
+              bodyRegion: exercise.bodyRegion,
+              repsPerSet: exercise.repsPerSet,
+              notes:exercise.notes,
+              src_url:exercise.src_url,
+              text:'Update My Lifts',
+              action:'Update',
+              value:this.update  
+            })
+        }
+        else{
+          this.setState({
+            user_id:decoded().subject,
+            name: '',
+            sets:'',
+            weight: '',
+            bodyRegion: '',
+            repsPerSet: '',
+            src_url:'',
+            notes:'',
+            text:'Add Lifts',
+            action:'Add',
+            value:this.add
+          })
+        }
+      }
       change = event => {
         this.setState({ [event.target.name]: event.target.value });
     }
-
+    
 
     update = e => {
         e.preventDefault();
-      this.props.updateExercises(this.state.user_id,this.props.match.params.id,{
+      this.props.updateExercises(this.state.user_id,this.props.liftId,{
         user_id: decoded().subject,
         name: this.state.name,
         sets: this.state.sets,
@@ -149,7 +154,7 @@ constructor(props){
         src_url: this.getImage(this.state.name),
         notes: this.state.notes
       });
-      !this.props.errors && this.props.history.push({pathname:`/`})
+      !this.props.errors && this.props.added(true)
     };
     add = e => {
       e.preventDefault();
@@ -176,7 +181,7 @@ constructor(props){
       let bodyParts = targetArray.map(body => <option key={body} value={body} />)
 
          return (
-            <Div url={this.props.location}><Form url={this.props.location} onSubmit={e => this.state.value(e)}>
+            <Form  onSubmit={e => this.state.value(e)}>
             <h2>{this.state.text}</h2>
             <div>
           <input
@@ -212,7 +217,6 @@ constructor(props){
           <Textarea name='notes' placeholder="Add Notes" value={this.state.notes}   onChange={event => this.change(event)}/>
           <Button>{this.state.action} </Button>
         </Form>
-        </Div>
 
          )
      }

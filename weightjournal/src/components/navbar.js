@@ -74,6 +74,7 @@ const Navbar = (props) => {
     username.charAt(0),
     username.charAt(0).toUpperCase()
   ); 
+  console.log(props)
   const logout= ()=>{
     props.logout()
     window.location.reload()
@@ -81,8 +82,8 @@ const Navbar = (props) => {
   return (
     <Container>
     <Logo><div><FaDumbbell/></div>
-    <h1> Lifted</h1></Logo>
-    
+   <NavLink to='/'><h2> Lifted</h2>
+   </NavLink> </Logo>
       <RightSection>
         <p>Welcome {name}</p>
         <NavLink to={`users/${id}`}>

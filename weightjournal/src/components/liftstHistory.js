@@ -62,9 +62,8 @@ const Details = styled.div`
   ${props => (props.srcUrl ? `margin: 0%` : `margin: 0% 10%`)};
   ${props => (props.srcUrl ? `border:none` : `border:2px solid green`)};
   ${props => (props.srcUrl ? `border:none`:`border-radius: 10px`)};
-
-  padding-top: 5%;
-  padding-right: 3%;
+  ${props => (props.srcUrl ? `box-shadow:none`:`box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) `)};
+  padding:1% 5%;
   div {
     display: flex;
     justify-content: space-between;
@@ -101,47 +100,29 @@ const Header = styled.div`
 const Actions = styled.div`
   display: flex;
   justify-content: center;
-  width: 80%;
-  margin:0 10%;
+  align-items:flex-end;
+  width: 100%;
+  height:42%;
+  margin:2% 0%;
   button  {
     width: 50%;
-  }
-  a {
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width: 40%;
-    border:1px solid white;
-    text-decoration:none;
-    margin-right: 2%;
-    margin-top: 2%;
-    background-color: green;
-    padding: 0% 5%;
-    border-radius: 5px 5px 0px 0px;
-    outline: none;
-    height: 3.8vh;
-    font-size: 1em;
-    color: white;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
       0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    &:hover {
-      background-color: black;
-    }
   }
 
 `;
-const Newspan = styled.span`
+const Newspan = styled.div`
   width: 50%;
 `;
 const Exercises = props => {
   useEffect(() => {
-    console.log(decode.subject)
     props.getExercises(decode().subject);
   }, []);
+  console.log(props.exercises)
 const sortedExercises = props.exercises && props.exercises.sort((a,b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
   return (
     <History>
-      <h2>My Lifts</h2>
+      <h2>Lifts History</h2>
       <hr/>
            {props.exercises && !props.error && sortedExercises.map(exercise => (
           <HistoryFound key={exercise.id}>
@@ -152,7 +133,7 @@ const sortedExercises = props.exercises && props.exercises.sort((a,b) => new Dat
                   <span>Lift: </span>
                   {exercise.name}
                 </h3>
-                <span>{Moment(exercise.created_at)}</span>
+                <Newspan>{Moment(exercise.created_at)}</Newspan>
               </Header>
               <div>
                 <span>
@@ -164,29 +145,28 @@ const sortedExercises = props.exercises && props.exercises.sort((a,b) => new Dat
                 <span>
                   <h3>Set:</h3>
                 </span>{" "}
-                <span>{exercise.sets} Sets</span>
+                <Newspan>{exercise.sets} Sets</Newspan>
               </div>
               <div>
                 <span>
                   <h3>Reps Per Set:</h3>{" "}
                 </span>
-                {exercise.repsPerSet} Reps
+                <Newspan>{exercise.repsPerSet} Reps</Newspan>
               </div>
               <div>
                 <span>
                   <h3>Weights Lifted:</h3>
                 </span>{" "}
-                {exercise.weight} Kg
+                <Newspan>{exercise.weight} Kg</Newspan>
               </div>
               <div>
                 <span>
                   <h3>Notes:</h3>
                 </span>{" "}
-                {exercise.notes}
+                <Newspan>{exercise.notes}</Newspan>
               </div>
               <Actions>
-                <Link to={`/update/${exercise.id}`}> Edit </Link>
-
+                <Button onClick={() => props.editing(exercise.id)}> Edit </Button>
                 <Button onClick={() => props.deleteExercises(decode().subject,exercise.id)}>
                   Delete
                 </Button>

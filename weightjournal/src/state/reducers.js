@@ -30,32 +30,7 @@ export const userReducer = (
       return state;
   }
 };
-export const registerReducer = (
-  state = {
-    registering: "initial",
-    loggingIn: false,
-    isLoggedin: localStorage.getItem("token") && true,
-    error: null,
-  },
-  action
-) => {
-  switch (action.type) {
-    case types.REGISTER:
-      return { ...state, registering: true };
-    case types.SUCCESS:
-      return {
-        ...state,
-        error: null,
-        isLoggedIn: true,
-      };
-    case types.FAILURE:
-      return { ...state, error: action.payload };
-    case types.LOGIN:
-      return { ...state, loggingIn: true };
-    default:
-      return state;
-  }
-};
+
 export const loginReducer = (
   state = {
     loggingIn: false,
@@ -137,14 +112,14 @@ export const exercisesReducer = (
       return state;
   }
 };
-export const exerciseReducer = (
+export const exeReducer = (
   state = {
     gettingExercise: "initial",
     updatingExercise: false,
     addingWorkout: false,
     deletingWorkout: false,
     error: null,
-    exercise: {},
+    exercise: [],
   },
   action
 ) => {
@@ -154,22 +129,7 @@ export const exerciseReducer = (
         ...state,
         gettingExercise: true
       };
-    case types.UPDATE_EXERCISE:
-      return {
-        ...state,
-        updatingExercise: true
-      };
-    case types.ADD_WORKOUT:
-      return {
-        ...state,
-        addingWorkout: true
-      };
-    case types.DELETE_WORKOUT:
-      return {
-        ...state,
-        deletingWorkout: true
-      };
-    case types.SUCCESS:
+    case types.SUCCESSFUL:
       return {
         ...state,
         exercise: action.payload,
@@ -193,42 +153,3 @@ export const exerciseReducer = (
   }
 };
 
-export const workoutReducer = (
-  state = {
-    gettingWorkout: false,
-    updatingWorkout: false,
-    workout: [],
-    error: null
-  },
-  action
-) => {
-  switch (action.type) {
-    case types.GET_WORKOUTS:
-      return {
-        ...state,
-        gettingWorkout: true
-      };
-    case types.UPDATE_WORKOUT:
-      return {
-        ...state,
-        updatingWorkout: true
-      };
-    case types.SUCCESS:
-      return {
-        ...state,
-        workout: action.payload,
-        gettingWorkout: false,
-        updatingWorkout: false,
-        error: null
-      };
-    case types.FAILURE:
-      return {
-        ...state,
-        gettingWorkout: false,
-        updatingWorkout: false,
-        error: action.payload
-      };
-    default:
-      return state;
-  }
-};

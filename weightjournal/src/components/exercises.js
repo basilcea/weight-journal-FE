@@ -3,12 +3,17 @@ import styled from "styled-components";
 import Navbar from "./navbar";
 import Form from "./liftsForm";
 import WorkoutHistory from "./liftstHistory";
+import Progress from "./liftsProgress";
+import {getExercises} from '../state/actionCreators'
+import {connect} from 'react-redux';
+import decode from './decode'
 const Header = styled.div`
   width: 100%;
   height: 70vh;
  background-image:url('http://www.driftcentral.com/wp-content/uploads/2015/09/Dark-Grey-Background-Photo-HD-Wallpaper-2nwk9-Free.jpeg');
   margin-top: 8%;
   background-size:contain;
+  background-color:rgb(33, 33, 33);
   border-radius: 10px 10px 0 0;
 `;
 const Container = styled.div`
@@ -63,6 +68,7 @@ const LiftsSection = styled.div`
   padding-top: 0;
   background-image:url('http://www.driftcentral.com/wp-content/uploads/2015/09/Dark-Grey-Background-Photo-HD-Wallpaper-2nwk9-Free.jpeg');
   transform: translateY(-34vh);
+  background-color:rgb(33, 33, 33);
   min-height: 60vh;
 `;
 const Button = styled.button`
@@ -89,28 +95,48 @@ class Exercises extends React.Component {
     this.state = {
       addWorkoutOpen: false,
       WorkoutHistoryOpen: true,
-      liftsHistoryOpen: false
+      liftsHistoryOpen: false,
+      isEditing:false,
+      liftId:'',
     };
+  }
+  componentWillMount(){
+    this.props.getExercises(decode().subject)
   }
   openAddWorkout = () => {
     this.setState({
-      addWorkoutOpen: true,
+      addWorkoutOpen:true,
       WorkoutHistoryOpen: false,
-      liftsHistoryOpen: false
+      liftsHistoryOpen: false,
+      isEditing:false,
+      liftId:'',
     });
   };
+openUpdateHistory =(value)=>{
+  this.setState({
+    addWorkoutOpen: true,
+    WorkoutHistoryOpen: false,
+    liftsHistoryOpen: false,
+    isEditing:true,
+    liftId:value
+  })
+}
   openWorkoutHistory = value => {
     this.setState({
       addWorkoutOpen: false,
       WorkoutHistoryOpen: value,
-      liftsHistoryOpen: false
+      liftsHistoryOpen: false,
+      isEditing:false,
+      liftId:'',
     });
   };
   openLiftsHistory = () => {
     this.setState({
       addWorkoutOpen: false,
       WorkoutHistoryOpen: false,
-      liftsHistoryOpen: true
+      liftsHistoryOpen: true,
+      isEditing:false,
+      liftId:null,
     });
   };
 
@@ -146,9 +172,10 @@ class Exercises extends React.Component {
         <LiftsSection>
           <Content>
             {this.state.addWorkoutOpen && (
-              <Form added={this.openWorkoutHistory} />
+              <Form added={this.openWorkoutHistory} liftId={this.state.liftId} isEditing={this.state.isEditing}/>
             )}
-            {this.state.WorkoutHistoryOpen && <WorkoutHistory />}
+            {this.state.WorkoutHistoryOpen && <WorkoutHistory  editing ={this.openUpdateHistory}/>}
+            {this.state.liftsHistoryOpen && <Progress  editing ={this.openUpdateHistory}/>}
           </Content>
         </LiftsSection>
       </Container>
@@ -156,4 +183,4 @@ class Exercises extends React.Component {
   }
 }
 
-export default Exercises;
+export default connect(null,{ getExercises}) (Exercises);
