@@ -72,15 +72,15 @@ class Progress extends React.Component{
         super(props)
         this.state=({
             isView:false,
-            id:0
+            id:null
         })
     }
   
-    getLiftDetails = (id , name, divId) => {
-        this.props.getExercise(id,name)
+    getLiftDetails = (name) => {
+        this.props.getExercise(name)
         this.setState({
             isView:true,
-            id: divId
+            id: name
         })
         
     }
@@ -104,7 +104,7 @@ class Progress extends React.Component{
             <div key={lift.name}>
             <img src={lift.url} alt=''/>
             <p>{lift.name}</p>
-            <ViewButton check={lift.name === this.state.id} onClick ={() =>this.getLiftDetails(decode().subject, lift.name ,lift.name)}>View</ViewButton>
+            <ViewButton check={lift.name === this.state.id} onClick ={() =>this.getLiftDetails( lift.name)}>View</ViewButton>
             {this.state.isView && this.state.id === lift.name && 
                 <button onClick ={() =>this.closeLiftDetails(lift.name)}>Close</button>
             }
@@ -117,7 +117,7 @@ class Progress extends React.Component{
                 <p>Reps: {exercise.repsPerSet} Reps</p>
                 <p>Weight Lifted: {exercise.weight} Kg</p>
                 <button onClick= {()=>this.props.editing(exercise.id)}>Edit</button>
-                <button onClick = {() => this.props.deleteExercises(decode().subject,exercise.id)}>Delete</button>
+                <button onClick = {() => this.props.deleteExercises(exercise.id)}>Delete</button>
                 </div>)}
             
             </div>

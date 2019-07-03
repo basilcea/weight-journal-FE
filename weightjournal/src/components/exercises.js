@@ -6,7 +6,6 @@ import WorkoutHistory from "./liftstHistory";
 import Progress from "./liftsProgress";
 import {getExercises} from '../state/actionCreators'
 import {connect} from 'react-redux';
-import decode from './decode'
 const Header = styled.div`
   width: 100%;
   height: 70vh;
@@ -100,8 +99,8 @@ class Exercises extends React.Component {
       liftId:'',
     };
   }
-  componentWillMount(){
-    this.props.getExercises(decode().subject)
+  componentDidMount(){
+    this.props.getExercises();
   }
   openAddWorkout = () => {
     this.setState({

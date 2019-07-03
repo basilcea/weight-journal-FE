@@ -53,7 +53,7 @@ export const loginReducer = (
         ...state,
         loggingIn: false,
         loggingOut: false,
-        isLoggedIn: true,
+        isLoggedIn: action.payload,
         error: null
       };
     case types.LOGIN_FAILURE:

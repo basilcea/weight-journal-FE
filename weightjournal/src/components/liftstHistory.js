@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import moment from 'moment';
-import decode from "./decode";
 import {
   getExercises,
   deleteExercises,
@@ -116,9 +114,8 @@ const Newspan = styled.div`
 `;
 const Exercises = props => {
   useEffect(() => {
-    props.getExercises(decode().subject);
+    props.getExercises();
   }, []);
-  console.log(props.exercises)
 const sortedExercises = props.exercises && props.exercises.sort((a,b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
   return (
     <History>
@@ -167,7 +164,7 @@ const sortedExercises = props.exercises && props.exercises.sort((a,b) => new Dat
               </div>
               <Actions>
                 <Button onClick={() => props.editing(exercise.id)}> Edit </Button>
-                <Button onClick={() => props.deleteExercises(decode().subject,exercise.id)}>
+                <Button onClick={() => props.deleteExercises(exercise.id)}>
                   Delete
                 </Button>
               </Actions>

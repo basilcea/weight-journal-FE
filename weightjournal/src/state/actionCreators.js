@@ -1,7 +1,10 @@
 import * as types from "./actionTypes";
 import axios from "axios";
+import Decode from "jwt-decode";
+
 // const url = 'https://weight-journal-backend.herokuapp.com'
 const url ='http://localhost:7000'
+const userId = Number(localStorage.getItem('userId'))
 const loggedInAxios = () => {
   const token = localStorage.getItem("token") || false;
   const instance = axios.create({
@@ -67,7 +70,8 @@ export const register = data => async dispatch => {
   try {
     const AxiosData = await axios.post(`${url}/api/register`, data);
     localStorage.setItem('token', AxiosData.data.token)
-    dispatch(loginSuccess());
+    localStorage.setItem('userId', Decode(localStorage.getItem('token')).subject)
+    dispatch(loginSuccess(true));
   } catch (err) {
     dispatch(loginFailure(err.message));
   }
@@ -79,12 +83,14 @@ export const login = (data) => async dispatch => {
   try {
     const AxiosData = await axios.post(`${url}/api/login`, data);
     localStorage.setItem("token", AxiosData.data.token);
-    dispatch(loginSuccess());
+    localStorage.setItem('userId', Decode(localStorage.getItem('token')).subject)
+    dispatch(loginSuccess(true));
+
   } catch(err) {
     dispatch(loginFailure(err.message));
   }
 };
-export const getProfile = userId => async dispatch => {
+export const getProfile = () => async dispatch => {
   dispatch({ type: types.GET_USER });
   try {
     const AxiosData = await loggedInAxios().get(
@@ -95,61 +101,64 @@ export const getProfile = userId => async dispatch => {
     dispatch(userFailure(err.message));
   }
 };
- export const deleteProfile = (userId) => async dispatch => {
+ export const deleteProfile = () => async dispatch => {
    dispatch({type: types.DELETE_USER});
    dispatch({ type: types.UPDATE_USER });
   try {
-    await loggedInAxios().delete(`${url}/api/user/${userId}`);
+    await loggedInAxios().delete(`${url}/api/users/${userId}`);
     localStorage.clear('token')
     dispatch(userSuccess());
+    dispatch(logout())
+  
   } catch (err) {
     dispatch(userFailure(err.message));
   }
 
  }
-export const updateProfile = (userId ,data)=> async dispatch => {
+export const updateProfile = (data)=> async dispatch => {
   dispatch({ type: types.UPDATE_USER });
   try {
-    await loggedInAxios().put(`http://localhost:3000/api/user/${userId}`, data);
+    await loggedInAxios().put(`${url}/api/users/${userId}`, data);
     dispatch(getProfile(userId));
   } catch (err) {
     dispatch(userFailure(err.message));
   }
 };
 
-export const getExercises = (id) => async dispatch => {
+export const getExercises = () => async dispatch => {
   dispatch({ type: types.FETCH_EXERCISES });
   try {
-    const AxiosData = await loggedInAxios().get(`${url}/api/users/${id}/lifts`);
+    const AxiosData = await loggedInAxios().get(`${url}/api/users/${userId}/lifts`);
       dispatch(exercisesSuccess(AxiosData.data));
   } catch(err) {
       dispatch(exercisesFailure(err.message));
 }
 }
 
-export const addExercises = (id,data) => async dispatch => {
+export const addExercises = (data) => async dispatch => {
   dispatch({ type: types.ADD_EXERCISE });
   try {
     await loggedInAxios().post(`${url}/api/lifts`, data);
-    dispatch(getExercises(id));
+    debugger;
+    dispatch(getExercises());
   } catch (err) {
     dispatch(exercisesFailure(err.message));
   }
 };
 
-export const deleteExercises = (id,exerciseId) => async dispatch => {
+export const deleteExercises = (exerciseId) => async dispatch => {
   dispatch({ type: types.DELETE_EXERCISE });
   try {
     await loggedInAxios().delete(
       `${url}/api/lifts/${exerciseId}`
     );
-    dispatch(getExercises(id));
+    dispatch(getExercises());
   } catch (err) {
     dispatch(exercisesFailure(err.message));
   }
 };
 
-export const updateExercises = (id,exerciseId, data) => async dispatch => {
+export const updateExercises = (exerciseId, data) => async dispatch => {
   dispatch({ type: types.UPDATE_EXERCISE });
   try {
     await loggedInAxios().put(
@@ -157,14 +166,14 @@ export const updateExercises = (id,exerciseId, data) => async dispatch => {
       data
     );
 
-    dispatch(getExercises(id));
+    dispatch(getExercises());
   } catch (err) {
     dispatch(exerciseFailure(err.message));
   }
 };
 
 
-export const getExercise = (userId, name) => async dispatch => {
+export const getExercise = (name) => async dispatch => {
   dispatch({ type: types.GET_EXERCISE });
   try {
     const AxiosData = await loggedInAxios().get(
@@ -182,15 +191,17 @@ export const getExercise = (userId, name) => async dispatch => {
 };
 
 export const logout = () => async dispatch => {
-  // check if backend guy implemented a route for token blacklisting with redis
-  // if backend guy did then
   try {
-    /* await loggedInAxios().get(
-            `http:localhost:3000/api/logout `
-
-        ) */
     localStorage.clear("token");
     dispatch(loginSuccess(false));
+    // eslint-disable-next-line no-restricted-globals
+    if(location.pathname !== `/`){
+        // eslint-disable-next-line no-restricted-globals
+      location.pathname=(`/`)
+    }
+
+   
+ 
   } catch (err) {
     dispatch(loginFailure(err.message));
   }

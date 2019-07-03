@@ -2,13 +2,11 @@ import React ,{Fragment} from 'react';
 import authenticate from '../authenticate';
 import LandingPage from  './modal';
 import ExercisePage from './exercises';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
 const Authenticated =  authenticate(ExercisePage)(LandingPage)
-
 const Container = (props ) => {
     return(
     <Fragment>
-  
     <Authenticated  {...props}/>
     </Fragment>
     )

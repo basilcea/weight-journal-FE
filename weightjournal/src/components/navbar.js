@@ -1,11 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styled from "styled-components";
-// import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 import { FaPowerOff, FaDumbbell } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import decode from "./decode";
-import {logout} from '../state/actionCreators'
+import {logout, getProfile} from '../state/actionCreators'
 import {connect} from 'react-redux';
+
 
 
 const Container = styled.div`
@@ -68,16 +69,24 @@ align-items:center;
   }
 `;
 const Navbar = (props) => {
-  const id = decode().subject;
+let id,name;
+
+if(decode()){
+  id = decode().subject
   const username = decode().username;
-  const name = username.replace(
+   name = username.replace(
     username.charAt(0),
     username.charAt(0).toUpperCase()
-  ); 
-  console.log(props)
+  );
+   } 
   const logout= ()=>{
     props.logout()
-    window.location.reload()
+  }
+useEffect(()=>{
+  props.getProfile()
+},[])
+  const redirect=()=>{
+    window.location.pathname=`/users/${id}`
   }
   return (
     <Container>
@@ -85,14 +94,10 @@ const Navbar = (props) => {
    <NavLink to='/'><h2> Lifted</h2>
    </NavLink> </Logo>
       <RightSection>
-        <p>Welcome {name}</p>
-        <NavLink to={`users/${id}`}>
-          View Profile
-          {/*<div>
+        <p>Welcome {props.user && props.user.username|| name}</p>
+        <button onClick={()=>redirect()}> 
         <FaUserCircle />
-            {username} 
-            </div>*/}
-        </NavLink>
+        </button>
         <button onClick={() =>logout()}>
             <FaPowerOff />
         </button>
@@ -100,4 +105,10 @@ const Navbar = (props) => {
     </Container>
   );
 };
-export default connect(null , {logout}) (Navbar)
+const mapStateToProps = ({userReducer}) => {
+  return({
+    user: userReducer.user
+  })
+}
+
+export default connect(mapStateToProps , {logout, getProfile}) (Navbar)

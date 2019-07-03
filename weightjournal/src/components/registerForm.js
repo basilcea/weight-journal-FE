@@ -178,40 +178,6 @@ class Register extends React.Component {
             required
           />
           </Div>
-          {!this.props.registering && <div>
-            <div>
-            <button onClick={this.uploadPicture}>Upload Picture </button>
-            <img src={this.state.src} alt="" />
-            </div>
-          <input
-            type="email"
-            name='email'
-            value={this.state.email}
-            onChange={e => this.change(e)}
-            placeholder="Email"
-          />
-          <input
-            type="text"
-            name='age'
-            value={this.state.age}
-            onChange={e => this.change(e)}
-            placeholder="Age"
-          />
-          <input
-            type="number"
-            name='height'
-            value={this.state.height}
-            onChange={e => this.change(e)}
-            placeholder="Height(in Ft)"
-          />
-          <input
-            type="number"
-            name='weight'
-            value={this.state.weight}
-            onChange={e => this.change(e)}
-            placeholder="Weight(in Kg)"
-          />
-          </div>}
           {!this.props.updatingUser && 
             <Section>
             <Div>

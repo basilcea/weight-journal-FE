@@ -1,17 +1,18 @@
 import React from 'react';
 import {Route} from 'react-router-dom';
-import LandingPage from './components/container'
 import ProfilePage from './components/profile'
-import RegisterPage from './components/registerForm'
-
+import Container from './components/container';
 
 const App = () =>{
     return(
         <div>
-        <Route exact path ='/' component={LandingPage}/>
-        <Route exact path='/users/:id' component={ProfilePage} />
-        <Route exact path='/users/update/:id' component={RegisterPage} />
+        <Route exact path ='/' component={Container}/>
+        <Route  exact path='/users/:id' component={ProfilePage} />
         </div>
     )
 }
-export default App
+
+
+
+
+export default App 
