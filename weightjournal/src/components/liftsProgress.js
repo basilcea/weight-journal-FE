@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {getExercise, getExercises, deleteExercises} from '../state/actionCreators';
 import styled from 'styled-components';
 import moment from 'moment';
-import decode from './decode';
  const Div = styled.div`
     color:white;
  `;
@@ -24,6 +23,12 @@ import decode from './decode';
 //   margin-bottom: 2px;
 // }
 // `;
+const Image = styled.img`
+    width:100%;
+    background-repeat:no-repeat;
+    margin-top:2%;
+    border-radius:5px 5px 0 0;
+`
 const ViewButton = styled.button`
 ${props => (props.check? `display: none` : `display: block`)};
 width: 100%;
@@ -87,7 +92,7 @@ class Progress extends React.Component{
     closeLiftDetails=(divId)=>{
         this.setState({
             isView:false,
-            id: ''
+            id: divId
         })
     }
     Moment =(value) => moment(value).calendar()
@@ -102,7 +107,7 @@ class Progress extends React.Component{
         <Div>
         {newObject && newObject.map(lift => 
             <div key={lift.name}>
-            <img src={lift.url} alt=''/>
+            <Image src={lift.url} alt=''/>
             <p>{lift.name}</p>
             <ViewButton check={lift.name === this.state.id} onClick ={() =>this.getLiftDetails( lift.name)}>View</ViewButton>
             {this.state.isView && this.state.id === lift.name && 

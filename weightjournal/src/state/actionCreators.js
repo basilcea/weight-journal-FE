@@ -73,21 +73,21 @@ export const register = data => async dispatch => {
     localStorage.setItem('userId', Decode(localStorage.getItem('token')).subject)
     dispatch(loginSuccess(true));
   } catch (err) {
-    dispatch(loginFailure(err.message));
+    dispatch(loginFailure(err.response.status));
   }
 };
 
 export const login = (data) => async dispatch => {
   dispatch({ type: types.LOGIN });
-  
+
   try {
     const AxiosData = await axios.post(`${url}/api/login`, data);
     localStorage.setItem("token", AxiosData.data.token);
     localStorage.setItem('userId', Decode(localStorage.getItem('token')).subject)
     dispatch(loginSuccess(true));
-
   } catch(err) {
-    dispatch(loginFailure(err.message));
+    console.dir(err)
+    dispatch(loginFailure(err.response.data.message));
   }
 };
 export const getProfile = () => async dispatch => {

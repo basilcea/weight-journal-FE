@@ -1,19 +1,26 @@
 import React from "react";
-import uploader from "./upload";
 import { register, updateProfile, getProfile } from "../state/actionCreators";
 import { connect } from "react-redux";
-import styled from 'styled-components';
+import styled,{keyframes} from "styled-components";
 import { FaUser, FaLock } from "react-icons/fa";
+import {slideInRight} from 'react-animations';
 
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   transform: translateY(-8vh);
+  @media (max-width:500px){
+    transform: translateY(-7vh);
+    }
   h2 {
     font-family: "Timmana", sans-serif;
     text-align: center;
+    @media (max-width:500px){
+      font-size:1.2em
+    }
   }
+
 `;
 
 const Form = styled.form`
@@ -42,7 +49,7 @@ const Div  = styled.div`
       text-align: center;
       color: white;
       height: 3.8vh;
-      background-color: lightgreen;
+      background-color: lightgray;
       border-radius: 5px 0px 0px 5px;
       box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
         0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -50,7 +57,7 @@ const Div  = styled.div`
     input {
       width: 90%;
       height: 3.8vh;
-      background-color: green;
+      background-color: grey;
       outline: none;
       border: none;
       padding-left:5%;
@@ -67,7 +74,7 @@ const Button = styled.button`
   width: 40%;
   margin-left:30%;
   margin-top:2%;
-  background-color: green;
+  background-color: grey;
   padding: 0% 5%;
   border-radius: 5px;
   outline:none;
@@ -85,12 +92,20 @@ const Registered = styled.div`
     margin-top:3%;
     border-radius:10px;
     p{
-        color:green;
+        color:black;
         text-align:center;
         font-weight:bolder;
     }`;
 const Section = styled.div `
-`
+`;
+const UserError = styled.div `
+  animation:2s ${keyframes `${slideInRight}`};
+  display:flex;
+  text-align:center;
+  justify-content:center;
+  align-items:center;
+    color:red;
+`;
 class Register extends React.Component {
   constructor(props) {
     super(props);
@@ -108,28 +123,6 @@ class Register extends React.Component {
     };
   }
   imagesrc;
-  componentDidMount() {
-    if (
-      this.props.location &&
-      this.props.location.pathname ===
-        `/users/update/${this.props.match.params.id}`
-    ) {
-      const user = this.props.getProfile(this.props.match.params.id).user;
-      user &&
-        this.setState({
-          username: user.name,
-          age: user.age,
-          height: user.height,
-          weight: user.weight,
-          text: "Update Profile",
-          email: user.email,
-          src: user.src,
-          action: "Update",
-          value: this.updateUser,
-          pass: ""
-        });
-    }
-  }
   change = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -141,14 +134,6 @@ class Register extends React.Component {
     });
   };
 
-  uploadPicture = () => {
-    uploader(this.getPicture).open();
-  };
-
-  getPicture = value => {
-    this.imagesrc = value.info.url;
-    return this.imagesrc;
-  };
 
   registerUser = event => {
     event.preventDefault();
@@ -165,6 +150,9 @@ class Register extends React.Component {
      
         <Form onSubmit={e => this.state.value(e)}>
         <h2>{this.state.text}</h2>
+        {this.state.confirmPword && this.state.confirmPword!== this.state.pass && <UserError> Password does not match</UserError> }
+        {this.props.error===401 && <UserError> Please provide a username and password.</UserError> }
+        {this.props.error ===500 && <UserError> Username already taken</UserError>}
         <Div>
         <span>
         <FaUser />
@@ -178,7 +166,6 @@ class Register extends React.Component {
             required
           />
           </Div>
-          {!this.props.updatingUser && 
             <Section>
             <Div>
             <span>
@@ -190,6 +177,7 @@ class Register extends React.Component {
             value={this.state.pass}
             onChange={e => this.change(e)}
             placeholder="Password"
+            required
        
           />
           </Div>
@@ -207,7 +195,7 @@ class Register extends React.Component {
           />
           </Div>
         
-          </Section>}
+          </Section>
           <Button onClick={e => this.state.value(e)}>{this.state.action}</Button>
         </Form>
         <Registered>
@@ -221,7 +209,8 @@ class Register extends React.Component {
 const mapStateToProps = ({userReducer, loginReducer}) =>{
     return ({
         updatingUser: userReducer.updatingUser,
-        registering: loginReducer.registering
+        registering: loginReducer.registering,
+        error:loginReducer.error
     })
 }
 export default connect(

@@ -8,26 +8,35 @@ import { FaUser } from "react-icons/fa";
 const Container = styled.div`
   display: flex;
   justify-content: flex-start;
-  background-color:teal;
+   background-color: rgb(34, 33, 33); 
   background-image: url("https://wallpaperplay.com/walls/full/7/b/5/32717.jpg");
   background-size: cover;
   background-position: left center;
   min-height: 100vh;
   background-repeat: no-repeat;
   z-index: -2;
+  @media (max-width:500px){
+    flex-direction: column
+  }
 `;
 
 const Hero = styled.div`
   display: flex;
   flex-direction: column;
   width: 40%;
-  min-height: 100vh;
   opacity: 0.5;
   align-items: center;
   justify-content: center;
+  @media (max-width:500px){
+    width: 100%;
+    justify-content: flex-start;
+    margin-top:5%;
+  }
+ 
 `;
 const Stripe1 = styled.div`
-  background-color: white;
+  background-color: black;
+  display:flex;
   width: 100%;
   height: 80vh;
   clip-path: polygon(
@@ -40,9 +49,24 @@ const Stripe1 = styled.div`
     10% 40%,
     20% 20%
   );
+  @media (max-width:500px){
+
+    height:25vh;
+    clip-path: polygon(
+    80% 0%,
+    90% 30%,
+    90% 60%,
+    80% 90%,
+    20% 90%,
+    10% 60%,
+    10% 30%,
+    20% 0%
+  );
+  }
 `;
 const Stripe2 = styled.div`
-  background-color: white;
+display:flex;
+  background-color: black;
   width: 100%;
   height: 80vh;
   clip-path: polygon(
@@ -55,22 +79,49 @@ const Stripe2 = styled.div`
     20% 40%,
     10% 20%
   );
+  @media (max-width:500px){
+
+height:25vh;
+clip-path: polygon(
+
+80% 0%,
+90% 30%,
+90% 60%,
+80% 90%,
+20% 90%,
+10% 60%,
+10% 30%,
+20% 0%
+);
+}
 `;
 const SignUpContainer = styled.div`
-  width: 30%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (min-width:500px){
+    width:30%;
+    margin-top:30%;
+  }
+  @media (min-width:1000px){
+    width:30%;
+    margin-top:12.5%;
+  }
 `;
 const PictureContainer = styled.div`
   display: flex;
-  margin-top: 40%;
   border-radius: 50%;
   width: 35%;
   height: 15vh;
   background-color: white;
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   z-index: 3;
+  @media (max-width: 500px){
+    margin-top:0%;
+    width: 20%;
+  height: 10vh;
+  }
 `;
 const Picture = styled.div`
   display: flex;
@@ -80,43 +131,49 @@ const Picture = styled.div`
   border-radius: 50%;
   width: 90%;
   margin: 3% 5%;
-  height: 14;
   text-align: center;
   font-size: 3em;
-  color: green;
+  color: grey;
+  @media (max-width:500px){
+    font-size: 1.5em;
+  }
 `;
 const FormContainer = styled.div`
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  width: 100%;
-  height: 30vh;
+  width: 80%;
+  height: 35vh;
   border-radius: 5%;
   padding-left: 10%;
   padding-right: 10%;
+  @media (max-width:500px){
+    box-shadow:none;
+  }
 `;
 const Heromessage = styled.div`
-  transform: translate(6vw, 18vh);
-  width: 55%;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  align-items:center;
+  width: 70%;
+  margin: 12% 15%;
   h1 {
     text-align: center;
-    color: green;
+    color: silver;
+    font-weight:bold;
+    text-shadow:1px 1px black;
+    font-size:2em;
   }
   div {
-    padding-top: 5%;
     font-size: 1.3em;
+    @media(max-width:500px){
+      font-size:1em;
+      color:white;
+      text-shadow:2px 2px black;
+    }
   }
 `;
-const LineBar1 = styled.div `
-    background-color:green;
-    width:100%;
-    height:10vh;
-    transform: translateY(24vh);
-`;
-const LineBar2 = styled.div `
-    background-color:green;
-    width:100%;
-    height:10vh;
-    transform: translateY(16vh);
-`;
+
+
 
 class Modal  extends React.Component{
     constructor(props){
@@ -126,6 +183,7 @@ class Modal  extends React.Component{
             loginOpen: true,
 
         }
+      
     }
     openLogin = () =>{
         this.setState({
@@ -146,13 +204,9 @@ class Modal  extends React.Component{
       <Hero>
         <Stripe1>
           <Heromessage>
-            <h1>You're Lifted !</h1>
-            <div>
-              <p>Keep a track of your weight lifting progress on Lifted</p>
-              <p>Track sets, reps and time elapsed for each workout</p>
-            </div>
+            <h1>Lifted </h1>
           </Heromessage>
-          <LineBar1 />
+         
         </Stripe1>
       </Hero>
       <SignUpContainer>
@@ -162,14 +216,18 @@ class Modal  extends React.Component{
           </Picture>
         </PictureContainer>
         <FormContainer>
-          {this.state.loginOpen && <Login  openRegister= {this.openRegister}/>}
+          {this.state.loginOpen && <Login  openRegister= {this.openRegister} error={this.error}/>}
           {this.state.registerOpen && <Register openLogin = {this.openLogin}/>}
         </FormContainer>
       </SignUpContainer>
       <Hero>
         <Stripe2>
-        <LineBar2 />
-        {/*<Carousel/> */}
+        <Heromessage>
+        <div>
+        <p>Track your weight lifting progress.</p>
+      </div>
+      </Heromessage>
+
         </Stripe2>
       </Hero>
     </Container>

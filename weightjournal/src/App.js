@@ -2,7 +2,7 @@ import React from 'react';
 import {Route} from 'react-router-dom';
 import ProfilePage from './components/profile'
 import Container from './components/container';
-
+import './App.css'
 const App = () =>{
     return(
         <div>

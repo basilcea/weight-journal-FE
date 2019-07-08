@@ -26,7 +26,7 @@ class Profile extends React.Component {
     this.props.getProfile();
   }
 
-  mywidget = window.cloudinary.createUploadWidget(
+  mywidget = window.cloudinary && window.cloudinary.createUploadWidget(
   {
     cloudName: "basilcea",
     uploadPreset: "weightJournal",

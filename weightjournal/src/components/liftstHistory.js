@@ -1,24 +1,27 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import moment from 'moment';
+import moment from "moment";
 import {
   getExercises,
   deleteExercises,
   addExercises
 } from "../state/actionCreators";
 const History = styled.div`
-  min-height: 100%;
+  min-height: 88%;
   margin-top: 10%;
- hr {
-   color:black;
-   font-size:2px
- }
+  hr {
+    color: black;
+    font-size: 2px;
+  }
   h2 {
     text-align: center;
     color: white;
     font-size: 2em;
     text-shadow: 2px 2px solid black;
+    @media (max-width: 500px) {
+      font-size: 1.2em;
+    }
   }
 `;
 const HistoryFound = styled.div`
@@ -27,15 +30,29 @@ const HistoryFound = styled.div`
   outline: none;
   margin: 5% 0%;
   border-radius: 10px;
-  min-height:30vh;
-  justify-content:space-between;
+  border: 1px solid green;
+  min-height: 30vh;
+  width: 100%;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  justify-content: space-between;
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
   span {
     color: green;
     font-size: 1em;
+    margin-bottom: 1%;
+    width: 60%;
+    @media (max-width: 500px) {
+      width: 100%;
+    }
   }
   h3 {
     display: inline-block;
     margin: 0;
+    @media (max-width: 500px) {
+      font-size: 0.9em;
+    }
   }
 `;
 const HistoryError = styled.div`
@@ -44,28 +61,35 @@ const HistoryError = styled.div`
     text-align: center;
     font-size: 2rem;
   }
-  p{
-    color:white;
-    text-align:center;
-    font-size:1.5em;
+  p {
+    color: white;
+    text-align: center;
+    font-size: 1.5em;
   }
 `;
 const Image = styled.img`
   min-height: 100%;
   width: 47%;
-  border-radius:0%;
+  border-radius: 0%;
+  @media (max-width: 500px) {
+    width: 100%;
+  }
 `;
 const Details = styled.div`
-  ${props => (props.srcUrl ? `width: 47%` : `width: 100%`)};
-  ${props => (props.srcUrl ? `margin: 0%` : `margin: 0% 10%`)};
-  ${props => (props.srcUrl ? `border:none` : `border:2px solid green`)};
-  ${props => (props.srcUrl ? `border:none`:`border-radius: 10px`)};
-  ${props => (props.srcUrl ? `box-shadow:none`:`box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) `)};
-  padding:1% 5%;
+  padding: 1% 5%;
+  width: 50%;
+  @media (max-width: 500px) {
+    margin: 0%;
+    border: none;
+    width: 100%;
+  }
   div {
     display: flex;
     justify-content: space-between;
-    flex-direction: row;
+    width: 100%;
+    padding: 1%;
+    @media (max-width: 500px) {
+    }
   }
   h3 {
     margin-bottom: 2px;
@@ -86,52 +110,66 @@ const Button = styled.button`
   &:hover {
     background-color: black;
   }
+  @media (max-width: 500px) {
+    font-size: 0.8em;
+  }
 `;
-const Moment =(value) => moment(value).calendar()
+const Moment = value => moment(value).calendar();
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0;
-  flex-wrap: wrap;
 `;
 const Actions = styled.div`
   display: flex;
   justify-content: center;
-  align-items:flex-end;
+  align-items: flex-end;
+  flex-wrap: nowrap;
   width: 100%;
-  height:42%;
-  margin:2% 0%;
-  button  {
-    width: 50%;
+  margin: 2% 0%;
+  button {
+    width: 48%;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
       0 6px 20px 0 rgba(0, 0, 0, 0.19);
   }
-
 `;
 const Newspan = styled.div`
   width: 50%;
+  flex-direction: row;
+  ${props => (props.check ? `color:grey` : `color:white`)}
+  @media (max-width:500px) {
+    font-size: 1em;
+  }
 `;
 const Exercises = props => {
   useEffect(() => {
     props.getExercises();
   }, []);
-const sortedExercises = props.exercises && props.exercises.sort((a,b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+  const sortedExercises =
+    props.exercises &&
+    props.exercises.sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
   return (
     <History>
       <h2>Lifts History</h2>
-      <hr/>
-           {props.exercises && !props.error && sortedExercises.map(exercise => (
+      <hr />
+      {props.exercises &&
+        !props.error &&
+        sortedExercises.map(exercise => (
           <HistoryFound key={exercise.id}>
-          {exercise.src_url && <Image src={exercise.src_url} alt="" />}
+            {exercise.src_url && <Image src={exercise.src_url} alt="" />}
             <Details srcUrl={exercise.src_url}>
-              <Header>
-                <h3>
-                  <span>Lift: </span>
-                  {exercise.name}
-                </h3>
-                <Newspan>{Moment(exercise.created_at)}</Newspan>
-              </Header>
+              <div>
+                <span>
+                  {" "}
+                  <h3> Lift: {exercise.name}</h3> 
+                </span>
+
+                <Newspan check="date">{Moment(exercise.created_at)}</Newspan>
+              </div>
               <div>
                 <span>
                   <h3>Target Region:</h3>
@@ -140,7 +178,7 @@ const sortedExercises = props.exercises && props.exercises.sort((a,b) => new Dat
               </div>
               <div>
                 <span>
-                  <h3>Set:</h3>
+                  <h3>Sets:</h3>
                 </span>{" "}
                 <Newspan>{exercise.sets} Sets</Newspan>
               </div>
@@ -163,7 +201,10 @@ const sortedExercises = props.exercises && props.exercises.sort((a,b) => new Dat
                 <Newspan>{exercise.notes}</Newspan>
               </div>
               <Actions>
-                <Button onClick={() => props.editing(exercise.id)}> Edit </Button>
+                <Button onClick={() => props.editing(exercise.id)}>
+                  {" "}
+                  Edit{" "}
+                </Button>
                 <Button onClick={() => props.deleteExercises(exercise.id)}>
                   Delete
                 </Button>

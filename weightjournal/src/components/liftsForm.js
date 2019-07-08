@@ -19,6 +19,10 @@ const Form = styled.form`
   font-family: "Roboto" sans-serif;
   display: flex;
   flex-direction: column;
+  @media (max-width:500px){
+    width:100%;
+    margin:10% 0%
+  }
   h2 {
     color: white;
     text-align: center;
@@ -45,6 +49,9 @@ const Form = styled.form`
     &::placeholder {
       color: white;
     }
+    @media(max-width:500px){
+      font-size:.6em;
+    }
   }
   input[type="number"] {
     &::-webkit-outer-spin-button,
@@ -70,6 +77,9 @@ const Textarea = styled.textarea`
   &::placeholder {
     color: white;
   }
+  @media(max-width:500px){
+      font-size:.6em;
+    }
 `;
 const Button = styled.button`
   text-align: center;
@@ -170,7 +180,7 @@ class Formed extends React.Component {
 
   getImage = value => {
     const single = value && nameArray.find(name => name.name === value);
-    return single ? single.url : null;
+    return single ? single.url : 'htpps://';
   };
   render() {
     let data = nameArray.map(exercise => (

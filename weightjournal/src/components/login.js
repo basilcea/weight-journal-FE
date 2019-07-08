@@ -1,22 +1,28 @@
 import React from "react";
 import { login } from "../state/actionCreators";
-import styled from "styled-components";
+import styled,{keyframes} from "styled-components";
 import { connect } from "react-redux";
 import { FaUser, FaLock } from "react-icons/fa";
-
+import {slideInRight} from 'react-animations';
 const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   transform: translateY(-8vh);
+  @media (max-width:500px){
+    transform:translateY(-7vh)
+  }
   h2 {
     font-family: "Roboto", sans-serif;
     text-align: center;
     font-weight:bold;
     font-size:1.5em;
+    @media (max-width:500px){
+      font-size:1.2em
+    }
   }
 `;
 const Form = styled.form`
-  background-color: white;
+  background-color: silver;
   border-radius: 10px;
   opacity:0.8;
   padding-left: 5%;
@@ -40,7 +46,7 @@ const Form = styled.form`
       text-align: center;
       color: white;
       height: 4vh;
-      background-color: lightgreen;
+      background-color: lightgray;
       border-radius: 5px 0px 0px 5px;
       box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
         0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -48,7 +54,7 @@ const Form = styled.form`
     input {
       width: 90%;
       height: 4vh;
-      background-color: green;
+      background-color: grey;
       outline: none;
       border: none;
       padding-left:5%;
@@ -66,7 +72,7 @@ const Button = styled.button`
   width: 40%;
   margin-left:30%;
   margin-top:5%;
-  background-color: green;
+  background-color: grey;
   padding: 0% 5%;
   border-radius: 5px;
   outline:none;
@@ -80,22 +86,36 @@ const Button = styled.button`
 }
 `;
 const Register = styled.div `
-    background-color:white;
+    background-color:silver;
     opacity:0.8;
     margin-top:3%;
     border-radius:10px;
     p{
-        color:green;
+        color:black;
         text-align:center;
         font-weight:bolder;
     }
 
 `;
+const Error = styled.div`
+animation:2s ${keyframes `${slideInRight}`};
+  display:flex;
+  text-align:center;
+  justify-content:center;
+  align-items:center;
+    color:red;
+`;
 
 
 class Login extends React.Component {
+  constructor(props){
+    super(props)
+    this.error = null
+    this.tweenElement =  null 
+  }
   nameRef = React.createRef();
   passRef = React.createRef();
+ 
 
   loginUser = e => {
     e.preventDefault();
@@ -112,6 +132,7 @@ class Login extends React.Component {
       <LoginContainer>
         <Form onSubmit={e => this.loginUser(e)} action="POST">
           <h2>Login to Lifted</h2>
+          {this.props.error && <Error> {this.props.error} </Error>}
           <div>
             <span>
               <FaUser />
@@ -134,8 +155,12 @@ class Login extends React.Component {
     );
   }
 }
+const mapStateToProps = ({loginReducer}) => {
+  return ({
+    error: loginReducer.error})
+}
 
 export default connect(
-  null,
+  mapStateToProps,
   { login }
 )(Login);
