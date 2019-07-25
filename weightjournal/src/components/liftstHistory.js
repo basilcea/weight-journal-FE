@@ -60,11 +60,18 @@ const HistoryError = styled.div`
     color: green;
     text-align: center;
     font-size: 2rem;
+    padding-top:5%;
+    @media (max-width:500px){
+      font-size:1rem;
+    }
   }
   p {
     color: white;
     text-align: center;
     font-size: 1.5em;
+    @media (max-width:500px){
+      font-size:1rem;
+    }
   }
 `;
 const Image = styled.img`
@@ -115,12 +122,6 @@ const Button = styled.button`
   }
 `;
 const Moment = value => moment(value).calendar();
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0;
-`;
 const Actions = styled.div`
   display: flex;
   justify-content: center;

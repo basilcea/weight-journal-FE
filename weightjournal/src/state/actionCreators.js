@@ -139,7 +139,6 @@ export const addExercises = (data) => async dispatch => {
   dispatch({ type: types.ADD_EXERCISE });
   try {
     await loggedInAxios().post(`${url}/api/lifts`, data);
-    debugger;
     dispatch(getExercises());
   } catch (err) {
     dispatch(exercisesFailure(err.message));
