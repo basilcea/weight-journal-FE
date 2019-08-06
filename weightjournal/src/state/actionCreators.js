@@ -2,8 +2,8 @@ import * as types from "./actionTypes";
 import axios from "axios";
 import Decode from "jwt-decode";
 
-// const url = 'https://weight-journal-backend.herokuapp.com'
-const url ='http://localhost:7000'
+const url = 'https://weight-journal-backend.herokuapp.com' 
+// const url ='http://localhost:7000'
 const userId = Number(localStorage.getItem('userId'))
 const loggedInAxios = () => {
   const token = localStorage.getItem("token") || false;
